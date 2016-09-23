@@ -17,10 +17,10 @@ public class CyActivator extends AbstractCyActivator {
 	public void start(BundleContext bc) {
 		CySwingApplication cytoscapeDesktopService = getService(bc,CySwingApplication.class);
 		
-		MyControlPanel myControlPanel = new MyControlPanel();
-		ControlPanelAction controlPanelAction = new ControlPanelAction(cytoscapeDesktopService,myControlPanel);
+		BrewerPanelComponent brewerPanelComponent = new BrewerPanelComponent();
+		ControlPanelAction controlPanelAction = new ControlPanelAction(cytoscapeDesktopService, brewerPanelComponent);
 
-		registerService(bc,myControlPanel,CytoPanelComponent.class, new Properties());
+		registerService(bc, brewerPanelComponent,CytoPanelComponent.class, new Properties());
 		registerService(bc,controlPanelAction,CyAction.class, new Properties());
 	}
 }

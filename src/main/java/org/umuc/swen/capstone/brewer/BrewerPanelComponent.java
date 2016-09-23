@@ -6,12 +6,12 @@ import org.cytoscape.application.swing.CytoPanelComponent;
 import org.cytoscape.application.swing.CytoPanelName;
 import org.umuc.swen.capstone.brewer.view.BrewerScaleMainPanel;
 
-public class MyControlPanel implements CytoPanelComponent {
+public class BrewerPanelComponent implements CytoPanelComponent {
 
   private final BrewerScaleMainPanel brewerScaleMainPanel;
   private final static String TITLE = "Brewer Scale";
 
-  public MyControlPanel() {
+  public BrewerPanelComponent() {
     this.brewerScaleMainPanel = new BrewerScaleMainPanel();
   }
 

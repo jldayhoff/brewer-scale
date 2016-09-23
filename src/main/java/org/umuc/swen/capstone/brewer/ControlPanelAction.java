@@ -13,19 +13,18 @@ public class ControlPanelAction extends AbstractCyAction {
 	private static final long serialVersionUID = 1L;
 	private CySwingApplication desktopApp;
 	private final CytoPanel cytoPanelWest;
-	private MyControlPanel myControlPanel;
+	private BrewerPanelComponent brewerPanelComponent;
 	
 	public ControlPanelAction(CySwingApplication desktopApp,
-			MyControlPanel myCytoPanel){
+			BrewerPanelComponent myCytoPanel){
 		// Add a menu item -- Apps->sample02
 		super("Brewer Scale");
 		setPreferredMenu("Apps.Samples");
 
 		this.desktopApp = desktopApp;
 		
-		//Note: myControlPanel is bean we defined and registered as a service
 		this.cytoPanelWest = this.desktopApp.getCytoPanel(CytoPanelName.WEST);
-		this.myControlPanel = myCytoPanel;
+		this.brewerPanelComponent = myCytoPanel;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -35,7 +34,7 @@ public class ControlPanelAction extends AbstractCyAction {
 		}	
 
 		// Select my panel
-		int index = cytoPanelWest.indexOfComponent(myControlPanel.getComponent());
+		int index = cytoPanelWest.indexOfComponent(brewerPanelComponent.getComponent());
 		if (index == -1) {
 			return;
 		}
