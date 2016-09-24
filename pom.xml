@@ -7,7 +7,7 @@
     <properties>
         <cytoscape.api.version>3.3.0</cytoscape.api.version>
         <maven-compiler-plugin.version>2.0.2</maven-compiler-plugin.version>
-        <maven-bundle-plugin.version>2.3.4</maven-bundle-plugin.version>
+        <maven-bundle-plugin.version>2.4.0</maven-bundle-plugin.version>
         <osgi.api.version>4.2.0</osgi.api.version>
         <bundle.symbolicname>org.umuc.swen</bundle.symbolicname>
         <bundle.namespace>org.umuc.swen.capstone.brewer</bundle.namespace>
@@ -119,6 +119,17 @@
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
             <version>${osgi.api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.7</version>
         </dependency>
     </dependencies>
 
