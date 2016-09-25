@@ -1,0 +1,25 @@
+{
+  "scales": [
+    {
+      "scaleName": "Spectral",
+      "type": "div",
+      "colors": [
+        {
+          "red": 252,
+          "green": 141,
+          "blue": 89
+        },
+        {
+          "red": 255,
+          "green": 255,
+          "blue": 191
+        },
+        {
+          "red": 153,
+          "green": 213,
+          "blue": 148
+        }
+      ]
+    }
+  ]
+}

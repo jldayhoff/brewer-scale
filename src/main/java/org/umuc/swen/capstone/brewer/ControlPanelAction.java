@@ -11,18 +11,18 @@ import org.cytoscape.application.swing.CytoPanelState;
 public class ControlPanelAction extends AbstractCyAction {
 
 	private static final long serialVersionUID = 1L;
+	private static final String APP_TITLE = "Brewer Scale";
+  private static final String APP_MENU = "Apps.Samples";
+
 	private CySwingApplication desktopApp;
 	private final CytoPanel cytoPanelWest;
 	private BrewerPanelComponent brewerPanelComponent;
-	
-	public ControlPanelAction(CySwingApplication desktopApp,
-			BrewerPanelComponent myCytoPanel){
-		// Add a menu item -- Apps->sample02
-		super("Brewer Scale");
-		setPreferredMenu("Apps.Samples");
+
+	public ControlPanelAction(CySwingApplication desktopApp, BrewerPanelComponent myCytoPanel){
+		super(APP_TITLE);
+		setPreferredMenu(APP_MENU);
 
 		this.desktopApp = desktopApp;
-		
 		this.cytoPanelWest = this.desktopApp.getCytoPanel(CytoPanelName.WEST);
 		this.brewerPanelComponent = myCytoPanel;
 	}

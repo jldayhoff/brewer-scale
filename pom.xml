@@ -41,10 +41,19 @@
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Private-Package>${bundle.namespace}.*</Private-Package>
                         <Bundle-Activator>${bundle.namespace}.CyActivator</Bundle-Activator>
+                        <Import-Package>*,!com.google.gson</Import-Package>
+                        <Embed-Dependency>gson</Embed-Dependency>
+                        <Include-Resource>{maven-resources}</Include-Resource>
                     </instructions>
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources/brewerscale</directory>
+
+            </resource>
+        </resources>
     </build>
 
     <repositories>
