@@ -25,7 +25,7 @@ public class BrewerScaleMapping implements FilterMapper {
     //TODO: This is for a Proof of Concept that we can modify the color of nodes based on a certain criteria.
     if (row.get("degree.layout", Integer.class) == 1) {
       networkViews.stream()
-              .forEach(networkView -> networkView.getNodeView(node).setVisualProperty(BasicVisualLexicon.NODE_FILL_COLOR,
+              .forEach(networkView -> networkView.getNodeView(node).setLockedValue(BasicVisualLexicon.NODE_FILL_COLOR,
                       brewerColorScale.getScales().get(0).getColors().get(0).getColor()));
     }
   }
