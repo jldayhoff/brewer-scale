@@ -1,6 +1,7 @@
 package org.umuc.swen.capstone.brewer.model.mapping;
 
 import java.util.Collection;
+import java.util.List;
 import org.cytoscape.model.CyNode;
 import org.cytoscape.model.CyRow;
 import org.cytoscape.view.model.CyNetworkView;
@@ -13,10 +14,10 @@ import org.umuc.swen.capstone.brewer.model.util.BrewerScaleColorChooserUtil;
  */
 public class BrewerScaleMapping implements FilterMapper {
 
-  private final BrewerColorScale brewerColorScale;
+  private final List<BrewerColorScale> brewerColorScales;
 
   public BrewerScaleMapping() {
-    brewerColorScale = new BrewerScaleColorChooserUtil().getBrewerColorScale();
+    brewerColorScales = new BrewerScaleColorChooserUtil().getBrewerColorScale();
   }
 
   @Override
@@ -26,7 +27,7 @@ public class BrewerScaleMapping implements FilterMapper {
     if (row.get("degree.layout", Integer.class) == 1) {
       networkViews.stream()
               .forEach(networkView -> networkView.getNodeView(node).setLockedValue(BasicVisualLexicon.NODE_FILL_COLOR,
-                      brewerColorScale.getScales().get(0).getColors().get(0).getColor()));
+                      brewerColorScales.get(10).getScales().get(0).get(0).getColor()));
     }
   }
 }

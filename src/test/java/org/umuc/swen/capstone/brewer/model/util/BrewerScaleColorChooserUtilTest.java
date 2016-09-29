@@ -1,5 +1,7 @@
 package org.umuc.swen.capstone.brewer.model.util;
 
+import java.util.List;
+import java.util.Map;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -19,10 +21,20 @@ public class BrewerScaleColorChooserUtilTest {
   }
 
   @Test
-  public void shouldTestBrewerScaleCanLoad() {
-    BrewerColorScale brewerColorScale = brewerScaleColorChooserUtil.getBrewerColorScale();
+  public void shouldCreateListOfBrewerColorScales() {
+    List<BrewerColorScale> brewerColorScale = brewerScaleColorChooserUtil.getBrewerColorScale();
     assertNotNull(brewerColorScale);
-    assertNotNull(brewerColorScale.getScales());
-    assertTrue(brewerColorScale.getScales().size() >= 1);
+    assertTrue(brewerColorScale.size() >= 1);
+    assertNotNull(brewerColorScale.get(0).getScales());
+    assertTrue(brewerColorScale.get(0).getScales().size() >= 1);
+  }
+
+  @Test
+  public void shouldCreateMapOfBrewerColorScales() {
+    String keyToFind = "Spectral";
+    Map<String, BrewerColorScale> brewerColorScaleMap = brewerScaleColorChooserUtil.getBrewerColorScaleMap();
+    assertNotNull(brewerColorScaleMap);
+    assertTrue(brewerColorScaleMap.containsKey(keyToFind));
+    assertTrue(brewerColorScaleMap.get(keyToFind).getScales().size() >= 1);
   }
 }
