@@ -17,21 +17,17 @@ public class BrewerPanelComponent implements CytoPanelComponent {
     this.brewerScaleMainPanel = new BrewerScaleMainPanel(networkManagerUtil);
   }
 
-
   public Component getComponent() {
     return this.brewerScaleMainPanel;
   }
-
 
   public CytoPanelName getCytoPanelName() {
     return CytoPanelName.WEST;
   }
 
-
   public String getTitle() {
     return TITLE;
   }
-
 
   public Icon getIcon() {
     return null;

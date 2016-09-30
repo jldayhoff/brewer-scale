@@ -22,15 +22,15 @@ public class CyActivator extends AbstractCyActivator {
 
   final private NetworkManagerUtil networkManagerUtil;
 
-	public CyActivator() {
-		super();
+  public CyActivator() {
+    super();
     networkManagerUtil = new NetworkManagerUtil(this);
   }
 
-	public void start(BundleContext bundleContext) {
-		getServices(bundleContext);
+  public void start(BundleContext bundleContext) {
+    getServices(bundleContext);
     registerServices(bundleContext);
-	}
+  }
 
   public CyNetworkViewManager getNetworkViewManager() {
     return networkViewManager;
@@ -41,16 +41,16 @@ public class CyActivator extends AbstractCyActivator {
   }
 
   private void getServices(BundleContext bundleContext) {
-    swingApplicationService = getService(bundleContext,CySwingApplication.class);
+    swingApplicationService = getService(bundleContext, CySwingApplication.class);
     networkViewManager = getService(bundleContext, CyNetworkViewManager.class);
     networkManager = getService(bundleContext, CyNetworkManager.class);
   }
 
-	private void registerServices(BundleContext bundleContext) {
+  private void registerServices(BundleContext bundleContext) {
     brewerPanelComponent = new BrewerPanelComponent(networkManagerUtil);
     controlPanelAction = new ControlPanelAction(swingApplicationService, brewerPanelComponent);
-    registerService(bundleContext, brewerPanelComponent,CytoPanelComponent.class, new Properties());
-    registerService(bundleContext, controlPanelAction,CyAction.class, new Properties());
+    registerService(bundleContext, brewerPanelComponent, CytoPanelComponent.class, new Properties());
+    registerService(bundleContext, controlPanelAction, CyAction.class, new Properties());
   }
 }
 

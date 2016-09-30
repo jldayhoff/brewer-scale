@@ -10,35 +10,35 @@ import org.cytoscape.application.swing.CytoPanelState;
 
 public class ControlPanelAction extends AbstractCyAction {
 
-	private static final long serialVersionUID = 1L;
-	private static final String APP_TITLE = "Brewer Scale";
+  private static final long serialVersionUID = 1L;
+  private static final String APP_TITLE = "Brewer Scale";
   private static final String APP_MENU = "Apps.Samples";
 
-	private CySwingApplication desktopApp;
-	private final CytoPanel cytoPanelWest;
-	private BrewerPanelComponent brewerPanelComponent;
+  private CySwingApplication desktopApp;
+  private final CytoPanel cytoPanelWest;
+  private BrewerPanelComponent brewerPanelComponent;
 
-	public ControlPanelAction(CySwingApplication desktopApp, BrewerPanelComponent myCytoPanel){
-		super(APP_TITLE);
-		setPreferredMenu(APP_MENU);
+  public ControlPanelAction(CySwingApplication desktopApp, BrewerPanelComponent myCytoPanel) {
+    super(APP_TITLE);
+    setPreferredMenu(APP_MENU);
 
-		this.desktopApp = desktopApp;
-		this.cytoPanelWest = this.desktopApp.getCytoPanel(CytoPanelName.WEST);
-		this.brewerPanelComponent = myCytoPanel;
-	}
+    this.desktopApp = desktopApp;
+    this.cytoPanelWest = this.desktopApp.getCytoPanel(CytoPanelName.WEST);
+    this.brewerPanelComponent = myCytoPanel;
+  }
 
-	public void actionPerformed(ActionEvent e) {
-		// If the state of the cytoPanelWest is HIDE, show it
-		if (cytoPanelWest.getState() == CytoPanelState.HIDE) {
-			cytoPanelWest.setState(CytoPanelState.DOCK);
-		}	
+  public void actionPerformed(ActionEvent e) {
+    // If the state of the cytoPanelWest is HIDE, show it
+    if (cytoPanelWest.getState() == CytoPanelState.HIDE) {
+      cytoPanelWest.setState(CytoPanelState.DOCK);
+    }
 
-		// Select my panel
-		int index = cytoPanelWest.indexOfComponent(brewerPanelComponent.getComponent());
-		if (index == -1) {
-			return;
-		}
-		cytoPanelWest.setSelectedIndex(index);
-	}
+    // Select my panel
+    int index = cytoPanelWest.indexOfComponent(brewerPanelComponent.getComponent());
+    if (index == -1) {
+      return;
+    }
+    cytoPanelWest.setSelectedIndex(index);
+  }
 
 }
