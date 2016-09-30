@@ -336,7 +336,7 @@
         }
       ]
     ],
-    "type": "div"
+    "type": "DIV"
   },
   {
     "name": "RdYlGn",
@@ -675,7 +675,7 @@
         }
       ]
     ],
-    "type": "div"
+    "type": "DIV"
   },
   {
     "name": "RdBu",
@@ -1014,7 +1014,7 @@
         }
       ]
     ],
-    "type": "div"
+    "type": "DIV"
   },
   {
     "name": "PiYG",
@@ -1353,7 +1353,7 @@
         }
       ]
     ],
-    "type": "div"
+    "type": "DIV"
   },
   {
     "name": "PRGn",
@@ -1692,7 +1692,7 @@
         }
       ]
     ],
-    "type": "div"
+    "type": "DIV"
   },
   {
     "name": "RdYlBu",
@@ -2031,7 +2031,7 @@
         }
       ]
     ],
-    "type": "div"
+    "type": "DIV"
   },
   {
     "name": "BrBG",
@@ -2370,7 +2370,7 @@
         }
       ]
     ],
-    "type": "div"
+    "type": "DIV"
   },
   {
     "name": "RdGy",
@@ -2709,7 +2709,7 @@
         }
       ]
     ],
-    "type": "div"
+    "type": "DIV"
   },
   {
     "name": "PuOr",
@@ -3048,7 +3048,7 @@
         }
       ]
     ],
-    "type": "div"
+    "type": "DIV"
   },
   {
     "name": "Set2",
@@ -3231,7 +3231,7 @@
         }
       ]
     ],
-    "type": "qual"
+    "type": "QUAL"
   },
   {
     "name": "Accent",
@@ -3414,7 +3414,7 @@
         }
       ]
     ],
-    "type": "qual"
+    "type": "QUAL"
   },
   {
     "name": "Set1",
@@ -3644,7 +3644,7 @@
         }
       ]
     ],
-    "type": "qual"
+    "type": "QUAL"
   },
   {
     "name": "Set3",
@@ -4045,7 +4045,7 @@
         }
       ]
     ],
-    "type": "qual"
+    "type": "QUAL"
   },
   {
     "name": "Dark2",
@@ -4228,7 +4228,7 @@
         }
       ]
     ],
-    "type": "qual"
+    "type": "QUAL"
   },
   {
     "name": "Paired",
@@ -4629,7 +4629,7 @@
         }
       ]
     ],
-    "type": "qual"
+    "type": "QUAL"
   },
   {
     "name": "Pastel2",
@@ -4812,7 +4812,7 @@
         }
       ]
     ],
-    "type": "qual"
+    "type": "QUAL"
   },
   {
     "name": "Pastel1",
@@ -5042,7 +5042,7 @@
         }
       ]
     ],
-    "type": "qual"
+    "type": "QUAL"
   },
   {
     "name": "OrRd",
@@ -5272,7 +5272,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "PuBu",
@@ -5502,7 +5502,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "BuPu",
@@ -5732,7 +5732,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "Oranges",
@@ -5962,7 +5962,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "BuGn",
@@ -6192,7 +6192,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "YlOrBr",
@@ -6422,7 +6422,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "YlGn",
@@ -6652,7 +6652,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "Reds",
@@ -6882,7 +6882,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "RdPu",
@@ -7112,7 +7112,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "Greens",
@@ -7342,7 +7342,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "YlGnBu",
@@ -7572,7 +7572,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "Purples",
@@ -7802,7 +7802,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "GnBu",
@@ -8032,7 +8032,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "Greys",
@@ -8262,7 +8262,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "YlOrRd",
@@ -8445,7 +8445,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "PuRd",
@@ -8675,7 +8675,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "Blues",
@@ -8905,7 +8905,7 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   },
   {
     "name": "PuBuGn",
@@ -9135,6 +9135,6 @@
         }
       ]
     ],
-    "type": "seq"
+    "type": "SEQ"
   }
 ]

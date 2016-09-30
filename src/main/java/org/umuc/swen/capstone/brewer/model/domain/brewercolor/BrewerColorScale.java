@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class BrewerColorScale {
   private String name;
-  private String type;
+  private ScaleType type;
   private List<List<BrewerColor>> scales;
 
   public String getName() {
@@ -18,11 +18,11 @@ public class BrewerColorScale {
     this.name = name;
   }
 
-  public String getType() {
+  public ScaleType getType() {
     return type;
   }
 
-  public void setType(String type) {
+  public void setType(ScaleType type) {
     this.type = type;
   }
 
