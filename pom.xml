@@ -41,8 +41,8 @@
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Private-Package>${bundle.namespace}.*</Private-Package>
                         <Bundle-Activator>${bundle.namespace}.CyActivator</Bundle-Activator>
-                        <Import-Package>*,!com.google.gson</Import-Package>
-                        <Embed-Dependency>gson</Embed-Dependency>
+                        <Import-Package>*,!com.google.gson,!org.biojava</Import-Package>
+                        <Embed-Dependency>gson,jcolorbrewer</Embed-Dependency>
                         <Include-Resource>{maven-resources}</Include-Resource>
                     </instructions>
                 </configuration>
@@ -139,6 +139,11 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.biojava</groupId>
+            <artifactId>jcolorbrewer</artifactId>
+            <version>5.2</version>
         </dependency>
     </dependencies>
 

@@ -1,10 +1,13 @@
 package org.umuc.swen.capstone.brewer.view.listener;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.List;
 import org.cytoscape.view.model.ContinuousRange;
+import org.jcolorbrewer.ColorBrewer;
+import org.jcolorbrewer.ui.ColorPaletteChooserDialog;
 import org.umuc.swen.capstone.brewer.model.domain.brewercolor.BrewerColor;
 import org.umuc.swen.capstone.brewer.model.mapping.BrewerScaleMapping;
 import org.umuc.swen.capstone.brewer.model.mapping.RandomBrewerScaleMapper;
@@ -28,7 +31,13 @@ public class ApplyBrewerScaleToNetworkListener implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    applyContinuousRangeImplementation();
+//    applyContinuousRangeImplementation();
+    ColorPaletteChooserDialog dialog = new ColorPaletteChooserDialog();
+    dialog.showDialog();
+    if (dialog.wasOKPressed()) {
+      Color c = dialog.getColor();
+      ColorBrewer cb = dialog.getColorPalette();
+    }
   }
 
   private void applyProofOfConcept() {
