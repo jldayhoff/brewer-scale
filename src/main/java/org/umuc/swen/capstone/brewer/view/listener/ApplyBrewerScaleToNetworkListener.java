@@ -35,8 +35,7 @@ public class ApplyBrewerScaleToNetworkListener implements ActionListener {
     ColorPaletteChooserDialog dialog = new ColorPaletteChooserDialog();
     dialog.showDialog();
     if (dialog.wasOKPressed()) {
-      Color c = dialog.getColor();
-      ColorBrewer cb = dialog.getColorPalette();
+      applyContinuousRangeImplementation(dialog.getColorPalette());
     }
   }
 
@@ -50,8 +49,9 @@ public class ApplyBrewerScaleToNetworkListener implements ActionListener {
     ));
   }
 
-  private void applyContinuousRangeImplementation() {
-    List<BrewerColor> colors = new BrewerScaleColorChooserUtil().getBrewerColorScale().get(0).getScales().get(5);
+  private void applyContinuousRangeImplementation(ColorBrewer colorBrewer) {
+    List<Color> colors = Arrays.asList(colorBrewer.getColorPalette(8));
+//    List<BrewerColor> colors = new BrewerScaleColorChooserUtil().getBrewerColorScale().get(0).getScales().get(5);
     List<NetworkRange> ranges = Arrays.asList(
             new BrewerColorRange(createContinuousRange(Integer.class, 0, 2), colors.get(0)),
             new BrewerColorRange(createContinuousRange(Integer.class, 3, 5), colors.get(1)),

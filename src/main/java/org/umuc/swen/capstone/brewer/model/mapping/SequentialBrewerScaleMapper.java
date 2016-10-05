@@ -27,7 +27,7 @@ public class SequentialBrewerScaleMapper implements FilterMapper {
             .ifPresent(brewerColor -> {
               networkViews.stream()
                       .forEach(networkView -> networkView.getNodeView(node).setLockedValue(BasicVisualLexicon.NODE_FILL_COLOR,
-                              brewerColor.getColor()));
+                              brewerColor));
             });
   }
 }

@@ -1,5 +1,6 @@
 package org.umuc.swen.capstone.brewer.model.range;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.Objects;
 import org.umuc.swen.capstone.brewer.model.domain.brewercolor.BrewerColor;
@@ -24,7 +25,7 @@ public class NetworkRangeMapper<T> {
    * @return {@link BrewerColor}. Throws {@link NoBrewerColorFoundException} if value not in
    * any range.
    */
-  public BrewerColor getBrewerColorInRange(T value) {
+  public Color getBrewerColorInRange(T value) {
     return ranges.stream()
             .map(networkRange -> networkRange.getBrewerColorInRange(value))
             .filter(Objects::nonNull)

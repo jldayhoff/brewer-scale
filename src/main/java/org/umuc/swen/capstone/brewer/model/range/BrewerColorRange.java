@@ -1,7 +1,7 @@
 package org.umuc.swen.capstone.brewer.model.range;
 
+import java.awt.Color;
 import org.cytoscape.view.model.ContinuousRange;
-import org.umuc.swen.capstone.brewer.model.domain.brewercolor.BrewerColor;
 
 /**
  * Created by cwancowicz on 9/29/16.
@@ -9,15 +9,15 @@ import org.umuc.swen.capstone.brewer.model.domain.brewercolor.BrewerColor;
 public class BrewerColorRange implements NetworkRange<Integer> {
 
   private final ContinuousRange<Integer> continuousRange;
-  private final BrewerColor brewerColor;
+  private final Color brewerColor;
 
-  public BrewerColorRange(ContinuousRange<Integer> continuousRange, BrewerColor brewerColor) {
+  public BrewerColorRange(ContinuousRange<Integer> continuousRange, Color brewerColor) {
     this.continuousRange = continuousRange;
     this.brewerColor = brewerColor;
   }
 
   @Override
-  public BrewerColor getBrewerColorInRange(Integer value) {
+  public Color getBrewerColorInRange(Integer value) {
     if (continuousRange.inRange(value)) {
       return brewerColor;
     }
