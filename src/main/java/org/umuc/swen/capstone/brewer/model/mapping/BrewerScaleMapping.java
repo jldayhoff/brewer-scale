@@ -30,4 +30,19 @@ public class BrewerScaleMapping implements FilterMapper {
                       brewerColorScales.get(10).getScales().get(0).get(0).getColor()));
     }
   }
+
+  @Override
+  public MapType getMapType() {
+    return null;
+  }
+
+  @Override
+  public OrderType getOrderType() {
+    return null;
+  }
+
+  @Override
+  public List<CyRow> sortRows(List<CyRow> list) {
+    return null;
+  }
 }

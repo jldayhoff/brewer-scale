@@ -30,6 +30,21 @@ public class RandomBrewerScaleMapper implements FilterMapper {
                     getNextRandomColor().getColor()));
   }
 
+  @Override
+  public MapType getMapType() {
+    return null;
+  }
+
+  @Override
+  public OrderType getOrderType() {
+    return null;
+  }
+
+  @Override
+  public List<CyRow> sortRows(List<CyRow> list) {
+    return null;
+  }
+
   private BrewerColor getNextRandomColor() {
     return colorScale.get(RANDOM.nextInt(this.max));
   }
