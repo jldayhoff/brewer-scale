@@ -25,7 +25,7 @@ public class ApplyBrewerScaleToNetworkListener implements ActionListener {
     dialog.showDialog();
     if (dialog.wasOKPressed()) {
 //      applyContinuousRangeImplementation(dialog.getColorPalette());
-      networkManagerUtil.applyFilterToNetworks("degree.layout", dialog.getColorPalette(), MapType.CONTINUOUS);
+      networkManagerUtil.applyFilterToNetworks("gal1RGexp", dialog.getColorPalette(), MapType.DIVERGING);
     }
 //    BrewerColorChooser brewerColorChooser = new BrewerColorChooser(new DivergingColorPalettePanel());
   }

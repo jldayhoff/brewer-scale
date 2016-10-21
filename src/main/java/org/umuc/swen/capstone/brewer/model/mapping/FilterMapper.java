@@ -14,5 +14,5 @@ public interface FilterMapper {
   void applyFilterMapping(Collection<CyNetworkView> networkViews, CyNode node, CyRow row);
   MapType getMapType();
   OrderType getOrderType();
-  List<CyRow> sortRows(List<CyRow> list);
+  List<CyRow> sortRows(List<CyRow> list, Class type);
 }

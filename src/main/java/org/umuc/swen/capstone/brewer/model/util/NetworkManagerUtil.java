@@ -19,6 +19,7 @@ import org.cytoscape.view.model.CyNetworkView;
 import org.cytoscape.view.model.CyNetworkViewManager;
 import org.jcolorbrewer.ColorBrewer;
 import org.umuc.swen.capstone.brewer.CyActivator;
+import org.umuc.swen.capstone.brewer.model.mapping.BrewerScaleMapperFactory;
 import org.umuc.swen.capstone.brewer.model.mapping.ContinuousBrewerScaleMapper;
 import org.umuc.swen.capstone.brewer.model.mapping.DiscreteBrewerScaleMapper;
 import org.umuc.swen.capstone.brewer.model.mapping.DivergingBrewerScaleMapper;
@@ -57,83 +58,12 @@ public class NetworkManagerUtil {
   public void applyFilterToNetwork(CyNetwork network, String columnName, ColorBrewer colorBrewer, MapType mapType) {
     CyNetworkViewManager viewManager = cyActivator.getNetworkViewManager();
     Collection<CyNetworkView> networkViews = viewManager.getNetworkViews(network);
-    FilterMapper mapper = createFilterMapper(network, columnName, colorBrewer, mapType);
-    List<CyRow> cyRows = mapper.sortRows(network.getDefaultNodeTable().getAllRows());
+    FilterMapper mapper = BrewerScaleMapperFactory.createFilterMapper(network, columnName, colorBrewer, mapType);
+    List<CyRow> cyRows = mapper.sortRows(network.getDefaultNodeTable().getAllRows(), network.getDefaultNodeTable().getColumn(columnName).getType());
     cyRows.stream()
             .forEach(row -> mapper.applyFilterMapping(networkViews, network.getNode(row.get(CyNetwork.SUID, Long.class)), row));
     networkViews.stream().forEach(CyNetworkView::updateView);
   }
 
-  private FilterMapper createFilterMapper(CyNetwork cyNetwork, String columnName, ColorBrewer colorBrewer, MapType mapType) {
 
-    switch (mapType) {
-      case DISCRETE:
-        return createDiscreteFilterMapper(columnName, colorBrewer, cyNetwork);
-      case CONTINUOUS:
-        return createSequentialFilterMapper(columnName, colorBrewer, cyNetwork);
-      case DIVERGING:
-        return createDivergentFilterMapper(columnName, colorBrewer, cyNetwork);
-      default:
-        throw new InternalError(String.format("Unsupported Map Type [%s]", mapType));
-    }
-  }
-
-  private FilterMapper createDiscreteFilterMapper(String columnName, ColorBrewer colorBrewer, CyNetwork cyNetwork) {
-    Set<Object> values = cyNetwork.getDefaultNodeTable().getAllRows()
-            .stream()
-            .map(row -> row.get(columnName, Object.class))
-            .collect(Collectors.toSet());
-    List<Color> colors = Arrays.asList(colorBrewer.getColorPalette(values.size()));
-
-    Iterator<Object> iterator = values.iterator();
-    Iterator<Color> colorIterator = colors.iterator();
-    Map<Object, Color> colorMap = new HashMap();
-    while (iterator.hasNext()) {
-      colorMap.put(iterator.next(), colorIterator.next());
-    }
-    return new DiscreteBrewerScaleMapper(colorMap, columnName);
-  }
-
-  private FilterMapper createSequentialFilterMapper(String columnName, ColorBrewer colorBrewer, CyNetwork cyNetwork) {
-    return new ContinuousBrewerScaleMapper(columnName, colorBrewer,
-            cyNetwork.getDefaultNodeTable().getAllRows().stream()
-            .map(row -> row.get(columnName, Object.class))
-            .collect(Collectors.toList())
-    );
-  }
-
-  private FilterMapper createDivergentFilterMapper(String columnName, ColorBrewer colorBrewer, CyNetwork cyNetwork) {
-    Integer sizeOfNetwork = cyNetwork.getDefaultNodeTable().getRowCount();
-    List<CyRow> rows = DivergingBrewerScaleMapper.sortRows(
-            cyNetwork.getDefaultNetworkTable().getAllRows(), columnName, OrderType.ASCENDING
-    );
-    Optional<CyRow> optional = rows.stream().filter(row -> row.get(columnName, Double.class) >= 0).findFirst();
-
-    Stack<Color> positiveStack = new Stack();
-    Stack<Color> negativeStack = new Stack();
-
-    int colorBrewerSize;
-    if (optional.isPresent()) {
-      int indexOfZero = rows.indexOf(optional.get());
-      if (indexOfZero <= rows.size()/2) {
-        colorBrewerSize = 2 * (rows.size() + 1 - indexOfZero);
-      }
-      else {
-        colorBrewerSize = 2 * indexOfZero;
-      }
-    }
-    else {
-      colorBrewerSize = rows.size();
-    }
-
-    List<Color> colors = Arrays.asList(colorBrewer.getColorPalette(colorBrewerSize));
-    List<Color> positiveColors = colors.subList(colors.size()/2, colors.size());
-    List<Color> negativeColors = colors.subList(0, colors.size()/2);
-    Collections.reverse(negativeColors);
-
-    positiveStack.addAll(positiveColors);
-    negativeStack.addAll(negativeColors);
-
-    return null;
-  }
 }
