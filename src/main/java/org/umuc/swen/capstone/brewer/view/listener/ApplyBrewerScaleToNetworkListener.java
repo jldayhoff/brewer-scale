@@ -2,7 +2,6 @@ package org.umuc.swen.capstone.brewer.view.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.cytoscape.view.model.ContinuousRange;
 import org.jcolorbrewer.ui.ColorPaletteChooserDialog;
 import org.umuc.swen.capstone.brewer.model.mapping.MapType;
 import org.umuc.swen.capstone.brewer.model.util.NetworkManagerUtil;
@@ -20,44 +19,10 @@ public class ApplyBrewerScaleToNetworkListener implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-//    applyContinuousRangeImplementation();
     ColorPaletteChooserDialog dialog = new ColorPaletteChooserDialog();
     dialog.showDialog();
     if (dialog.wasOKPressed()) {
-//      applyContinuousRangeImplementation(dialog.getColorPalette());
-      networkManagerUtil.applyFilterToNetworks("gal1RGexp", dialog.getColorPalette(), MapType.DIVERGING);
+      networkManagerUtil.applyFilterToNetworks("degree.layout", dialog.getColorPalette(), MapType.DIVERGING);
     }
-//    BrewerColorChooser brewerColorChooser = new BrewerColorChooser(new DivergingColorPalettePanel());
-  }
-
-//  private void applyProofOfConcept() {
-//    this.networkManagerUtil.applyFilterToNetworks(new BrewerScaleMapping());
-//  }
-
-  private void applyRandomFilterImplementation() {
-//    this.networkManagerUtil.applyFilterToNetworks(new RandomBrewerScaleMapper(
-//            new BrewerScaleColorChooserUtil().getBrewerColorScale().get(15).getScales().get(2)
-//    ));
-  }
-
-//  private void applyContinuousRangeImplementation(ColorBrewer colorBrewer) {
-//    List<Color> colors = Arrays.asList(colorBrewer.getColorPalette(8));
-////    List<BrewerColor> colors = new BrewerScaleColorChooserUtil().getBrewerColorScale().get(0).getScales().get(5);
-//    List<NetworkRange> ranges = Arrays.asList(
-//            new BrewerColorRange(createContinuousRange(Integer.class, 0, 2), colors.get(0)),
-//            new BrewerColorRange(createContinuousRange(Integer.class, 3, 5), colors.get(1)),
-//            new BrewerColorRange(createContinuousRange(Integer.class, 6, 8), colors.get(2)),
-//            new BrewerColorRange(createContinuousRange(Integer.class, 9, 11), colors.get(3)),
-//            new BrewerColorRange(createContinuousRange(Integer.class, 12, 14), colors.get(4)),
-//            new BrewerColorRange(createContinuousRange(Integer.class, 15, 17), colors.get(5)),
-//            new BrewerColorRange(createContinuousRange(Integer.class, 18, 20), colors.get(6)),
-//            new BrewerColorRange(createContinuousRange(Integer.class, 21, 23), colors.get(7))
-//    );
-//    NetworkRangeMapper rangeMapper = new NetworkRangeMapper(ranges);
-//    this.networkManagerUtil.applyFilterToNetworks(new ContinuousBrewerScaleMapper(rangeMapper, "degree.layout"));
-//  }
-
-  private ContinuousRange createContinuousRange(Class type, Object min, Object max) {
-    return new ContinuousRange(type, min, max, true, true);
   }
 }

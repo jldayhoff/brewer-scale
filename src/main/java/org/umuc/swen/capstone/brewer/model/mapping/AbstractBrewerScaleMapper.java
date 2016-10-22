@@ -34,10 +34,6 @@ public abstract class AbstractBrewerScaleMapper implements FilterMapper {
 
   @Override
   public List<CyRow> sortRows(List<CyRow> list, Class type) {
-    return sortRows(list, this.columnName, this.orderType, type);
-  }
-
-  public static List<CyRow> sortRows(List<CyRow> list, String columnName, OrderType orderType, Class type) {
     if (Objects.nonNull(list) && !list.isEmpty()) {
       if (list.get(0).getTable().getColumn(columnName).getType() == type) {
         switch(orderType) {
@@ -55,11 +51,12 @@ public abstract class AbstractBrewerScaleMapper implements FilterMapper {
     return list;
   }
 
+  @Override
   public OrderType getOrderType() {
     return orderType;
   }
 
-  private static int compareAscendingOrder(CyRow row1, CyRow row2, String columnName, Class type) {
+  private int compareAscendingOrder(CyRow row1, CyRow row2, String columnName, Class type) {
 
     if (Objects.isNull(row1.get(columnName, type)) || Objects.isNull(row2.get(columnName, type))) {
       return -1;
@@ -72,7 +69,7 @@ public abstract class AbstractBrewerScaleMapper implements FilterMapper {
     }
   }
 
-  private static int compareDescendingOrder(CyRow row1, CyRow row2, String columnName, Class type) {
+  private int compareDescendingOrder(CyRow row1, CyRow row2, String columnName, Class type) {
     if (Objects.isNull(row1.get(columnName, type)) || Objects.isNull(row2.get(columnName, type))) {
       return 1;
     }

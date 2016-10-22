@@ -1,26 +1,39 @@
 package org.umuc.swen.capstone.brewer.model.mapping;
 
 import java.awt.Color;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Stack;
 import org.cytoscape.model.CyRow;
 import org.jcolorbrewer.ColorBrewer;
+import org.umuc.swen.capstone.brewer.model.exception.InvalidBrewerColorMapper;
+import org.umuc.swen.capstone.brewer.model.exception.InvalidElement;
 
 /**
  * Created by cwancowicz on 10/17/16.
  */
-public class DivergingBrewerScaleMapper extends AbstractBrewerScaleMapper {
+public class DivergingBrewerScaleMapper<T> extends AbstractBrewerScaleMapper {
 
-  private final Stack<Color> positiveColorStack;
-  private final Stack<Color> negativeColorStack;
+  private final Double maxValue;
+  private final Integer colorScale;
+  private final List<Color> positiveColors;
+  private final List<Color> negativeColors;
+  private final Class<T> type;
 
-  public DivergingBrewerScaleMapper(String columnName, Stack<Color> positiveColorStack, Stack<Color> negativeColorStack) {
+  public DivergingBrewerScaleMapper(String columnName, ColorBrewer colorBrewer, Double maxValue, Class<T> type) {
     super(columnName, OrderType.ASCENDING);
-    this.positiveColorStack = positiveColorStack;
-    this.negativeColorStack = negativeColorStack;
+    this.maxValue = maxValue;
+    this.colorScale = 100;
+    this.type = type;
+
+    validateType(type);
+
+    Color[] colors = colorBrewer.getColorPalette((colorScale*2) + 1);
+    this.negativeColors = Arrays.asList(Arrays.copyOfRange(colors, 0, colorScale));
+    this.positiveColors = Arrays.asList(Arrays.copyOfRange(colors, colorScale, colors.length));
+    Collections.reverse(negativeColors);
   }
 
   @Override
@@ -30,14 +43,40 @@ public class DivergingBrewerScaleMapper extends AbstractBrewerScaleMapper {
 
   @Override
   protected Optional<Color> getColor(CyRow row) {
-    if (Objects.isNull(row.get(columnName, Double.class))) {
+    if (Objects.isNull(row.get(columnName, type))) {
       return Optional.empty();
     }
-    else if (row.get(columnName, Double.class) > 0) {
-      return Optional.of(positiveColorStack.pop());
+
+    T value = row.get(columnName, type);
+
+    if (isPositive(value)) {
+      return Optional.of(positiveColors.get(getBucket(value)));
     }
     else {
-      return Optional.of(negativeColorStack.pop());
+      return Optional.of(negativeColors.get(getBucket(value)));
     }
+  }
+
+  private Integer getBucket(T value) {
+    if (value instanceof Double) {
+      return (int) Math.floor((Math.abs((Double) value) / maxValue) * colorScale);
+    }
+    else {
+      return (int) Math.floor((Math.abs((Integer) value) / maxValue) * colorScale);
+    }
+  }
+
+  private boolean isPositive(T value) {
+    if (value instanceof Integer && (Integer)value >= 0) {
+      return true;
+    }
+    return false;
+  }
+
+  private void validateType(Class<T> type) {
+    if (type == Integer.class || type == Double.class) {
+      return;
+    }
+    throw new InvalidBrewerColorMapper(getMapType(), InvalidElement.INVALID_DATA_TYPE);
   }
 }

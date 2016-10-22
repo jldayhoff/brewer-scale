@@ -2,19 +2,19 @@ package org.umuc.swen.capstone.brewer.model.mapping;
 
 import java.awt.Color;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
-import java.util.Stack;
 import java.util.stream.Collectors;
 import org.cytoscape.model.CyNetwork;
 import org.cytoscape.model.CyRow;
 import org.jcolorbrewer.ColorBrewer;
+import org.umuc.swen.capstone.brewer.model.exception.InvalidBrewerColorMapper;
+import org.umuc.swen.capstone.brewer.model.exception.InvalidDataException;
+import org.umuc.swen.capstone.brewer.model.exception.InvalidElement;
 
 /**
  * Created by cwancowicz on 10/20/16.
@@ -60,46 +60,30 @@ public class BrewerScaleMapperFactory {
   }
 
   private static FilterMapper createDivergentFilterMapper(String columnName, ColorBrewer colorBrewer, CyNetwork cyNetwork) {
-    Integer sizeOfNetwork = cyNetwork.getDefaultNodeTable().getRowCount();
-    List<CyRow> rows = DivergingBrewerScaleMapper.sortRows(
-            cyNetwork.getDefaultNodeTable().getAllRows(), columnName, OrderType.ASCENDING,
-            cyNetwork.getDefaultNodeTable().getColumn(columnName).getType()
-    );
     Class type = cyNetwork.getDefaultNodeTable().getColumn(columnName).getType();
-    Optional<CyRow> optional = rows.stream().filter(row -> Objects.nonNull(row.get(columnName, type)) && (Double) row.get(columnName, type) >= 0).findFirst();
-
-    Stack<Color> positiveStack = new Stack();
-    Stack<Color> negativeStack = new Stack();
-
-    Integer indexOfZero;
-    if (optional.isPresent()) {
-      indexOfZero = rows.indexOf(optional.get());
+    Integer maxValue;
+    if (type == Integer.class) {
+      CyRow cyRow = cyNetwork.getDefaultNodeTable().getAllRows()
+              .stream()
+              .filter(row -> Objects.nonNull(row.get(columnName, Integer.class)))
+              .max((row1, row2) -> Integer.valueOf(Math.abs(row1.get(columnName, Integer.class)))
+                      .compareTo(Integer.valueOf(Math.abs(row2.get(columnName, Integer.class)))))
+              .orElseThrow(() -> new InvalidDataException(columnName));
+      maxValue = Math.abs(cyRow.get(columnName, Integer.class));
+    }
+    else if (type == Double.class) {
+      CyRow cyRow = cyNetwork.getDefaultNodeTable().getAllRows()
+              .stream()
+              .filter(row -> Objects.nonNull(row.get(columnName, Double.class)))
+              .max((row1, row2) -> Double.valueOf(Math.abs(row1.get(columnName, Double.class)))
+                      .compareTo(Double.valueOf(Math.abs(row2.get(columnName, Double.class)))))
+              .orElseThrow(() -> new InvalidDataException(columnName));
+      maxValue = Double.valueOf(Math.ceil(Math.abs(cyRow.get(columnName, Double.class)))).intValue();
     }
     else {
-      indexOfZero = 0;
+      throw new InvalidBrewerColorMapper(MapType.DIVERGING, InvalidElement.INVALID_DATA_TYPE);
     }
 
-    int colorBrewerSize;
-    if (optional.isPresent()) {
-      if (indexOfZero <= rows.size()/2) {
-        colorBrewerSize = 2 * (rows.size() + 1 - indexOfZero);
-      }
-      else {
-        colorBrewerSize = 2 * indexOfZero;
-      }
-    }
-    else {
-      colorBrewerSize = rows.size();
-    }
-
-    List<Color> colors = Arrays.asList(colorBrewer.getColorPalette(colorBrewerSize));
-    List<Color> positiveColors = colors.subList(colors.size()/2, colors.size());
-    List<Color> negativeColors = colors.subList(colors.size()/2 - indexOfZero, colors.size()/2);
-    Collections.reverse(negativeColors);
-
-    positiveStack.addAll(positiveColors);
-    negativeStack.addAll(negativeColors);
-
-    return new DivergingBrewerScaleMapper(columnName, positiveStack, negativeStack);
+    return new DivergingBrewerScaleMapper(columnName, colorBrewer, maxValue.doubleValue(), type);
   }
 }
