@@ -9,6 +9,7 @@ import org.cytoscape.model.CyNode;
 import org.cytoscape.model.CyRow;
 import org.cytoscape.view.model.CyNetworkView;
 import org.cytoscape.view.presentation.property.BasicVisualLexicon;
+import org.jcolorbrewer.ColorBrewer;
 
 /**
  * Created by cwancowicz on 10/15/16.
@@ -17,10 +18,13 @@ public abstract class AbstractBrewerScaleMapper implements FilterMapper {
 
   protected final String columnName;
   protected final OrderType orderType;
+  protected final ColorBrewer colorBrewer;
 
-  public AbstractBrewerScaleMapper(String columnName, OrderType orderType) {
+  public AbstractBrewerScaleMapper(ColorBrewer colorBrewer, String columnName, OrderType orderType) {
     this.columnName = columnName;
     this.orderType = orderType;
+    this.colorBrewer = colorBrewer;
+    validateColorBrewer(colorBrewer);
   }
 
   @Override
@@ -77,4 +81,5 @@ public abstract class AbstractBrewerScaleMapper implements FilterMapper {
   }
 
   protected abstract Optional<Color> getColor(CyRow row);
+  protected abstract void validateColorBrewer(ColorBrewer colorBrewer);
 }

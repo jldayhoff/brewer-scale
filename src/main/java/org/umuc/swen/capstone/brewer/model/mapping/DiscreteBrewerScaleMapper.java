@@ -1,29 +1,50 @@
 package org.umuc.swen.capstone.brewer.model.mapping;
 
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.Stack;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.cytoscape.model.CyRow;
+import org.jcolorbrewer.ColorBrewer;
+import org.umuc.swen.capstone.brewer.model.exception.InvalidBrewerColorMapper;
+import org.umuc.swen.capstone.brewer.model.exception.InvalidElement;
 
 /**
  * Created by cwancowicz on 10/14/16.
  */
-public class DiscreteBrewerScaleMapper extends AbstractBrewerScaleMapper {
+public class DiscreteBrewerScaleMapper<T> extends AbstractBrewerScaleMapper {
 
-  private Map<Object, Color> valueColorMap = null;
+  private Map<T, Color> valueColorMap = null;
 
-  public DiscreteBrewerScaleMapper(final Map<Object, Color> valueColorMap, String columnName, OrderType orderType) {
-    super(columnName, orderType);
-    this.valueColorMap = valueColorMap;
+  public DiscreteBrewerScaleMapper(final Set<T> values, ColorBrewer colorBrewer, String columnName, OrderType orderType) {
+    super(colorBrewer, columnName, orderType);
+    createValueColorMap(values, colorBrewer);
   }
 
-  public DiscreteBrewerScaleMapper(final Map<Object, Color> valueColorMap, String columnName) {
-    this(valueColorMap, columnName, OrderType.NONE);
+  private void createValueColorMap(Set<T> values, ColorBrewer colorBrewer) {
+    Stack<Color> colors = new Stack();
+    colors.addAll(Arrays.asList(colorBrewer.getColorPalette(values.size())));
+    valueColorMap = values.stream().collect(Collectors.toMap(Function.identity(), value -> colors.pop()));
+  }
+
+  public DiscreteBrewerScaleMapper(final Set<T> values, ColorBrewer colorBrewer, String columnName) {
+    this(values, colorBrewer, columnName, OrderType.NONE);
   }
 
   @Override
   protected Optional<Color> getColor(CyRow row) {
     return Optional.ofNullable(valueColorMap.get(row.get(this.columnName, Object.class)));
+  }
+
+  @Override
+  protected void validateColorBrewer(ColorBrewer colorBrewer) {
+    if (!Arrays.asList(ColorBrewer.getQualitativeColorPalettes(false)).contains(colorBrewer)) {
+      throw new InvalidBrewerColorMapper(MapType.DISCRETE, InvalidElement.EXPECTED_QUALITATIVE_PALETTE);
+    }
   }
 
   @Override

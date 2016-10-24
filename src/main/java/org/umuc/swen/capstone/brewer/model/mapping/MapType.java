@@ -4,15 +4,21 @@ package org.umuc.swen.capstone.brewer.model.mapping;
  * Created by cwancowicz on 10/16/16.
  */
 public enum MapType {
-  DISCRETE("Discrete Mapper"), CONTINUOUS("Continuous Mapper"), DIVERGING("Diverging Mapper");
+  DISCRETE(2, "Discrete Mapper"), CONTINUOUS(3, "Continuous Mapper"), DIVERGING(1, "Diverging Mapper");
 
   private String mapName;
+  private int paletteType;
 
-  MapType(String mapName) {
+  MapType(int type, String mapName) {
     this.mapName = mapName;
+    this.paletteType = type;
   }
 
   public String getMapName() {
     return this.mapName;
+  }
+
+  public int getPaletteType() {
+    return paletteType;
   }
 }

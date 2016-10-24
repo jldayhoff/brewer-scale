@@ -23,7 +23,7 @@ public class DivergingBrewerScaleMapper<T> extends AbstractBrewerScaleMapper {
   private final Class<T> type;
 
   public DivergingBrewerScaleMapper(String columnName, ColorBrewer colorBrewer, Double maxValue, Class<T> type) {
-    super(columnName, OrderType.ASCENDING);
+    super(colorBrewer, columnName, OrderType.ASCENDING);
     this.maxValue = maxValue;
     this.colorScale = 100;
     this.type = type;
@@ -54,6 +54,13 @@ public class DivergingBrewerScaleMapper<T> extends AbstractBrewerScaleMapper {
     }
     else {
       return Optional.of(negativeColors.get(getBucket(value)));
+    }
+  }
+
+  @Override
+  protected void validateColorBrewer(ColorBrewer colorBrewer) {
+    if (!Arrays.asList(ColorBrewer.getDivergingColorPalettes(false)).contains(colorBrewer)) {
+      throw new InvalidBrewerColorMapper(MapType.DISCRETE, InvalidElement.EXPECTED_DIVERGING_PALETTE);
     }
   }
 

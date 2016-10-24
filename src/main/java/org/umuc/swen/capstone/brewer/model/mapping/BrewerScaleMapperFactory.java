@@ -40,15 +40,7 @@ public class BrewerScaleMapperFactory {
             .stream()
             .map(row -> row.get(columnName, Object.class))
             .collect(Collectors.toSet());
-    List<Color> colors = Arrays.asList(colorBrewer.getColorPalette(values.size()));
-
-    Iterator<Object> iterator = values.iterator();
-    Iterator<Color> colorIterator = colors.iterator();
-    Map<Object, Color> colorMap = new HashMap();
-    while (iterator.hasNext()) {
-      colorMap.put(iterator.next(), colorIterator.next());
-    }
-    return new DiscreteBrewerScaleMapper(colorMap, columnName);
+    return new DiscreteBrewerScaleMapper(values, colorBrewer, columnName);
   }
 
   private static FilterMapper createSequentialFilterMapper(String columnName, ColorBrewer colorBrewer, CyNetwork cyNetwork) {
