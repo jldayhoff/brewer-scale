@@ -40,7 +40,7 @@ public abstract class AbstractBrewerScaleMapper implements FilterMapper {
   public List<CyRow> sortRows(List<CyRow> list, Class type) {
     if (Objects.nonNull(list) && !list.isEmpty()) {
       if (list.get(0).getTable().getColumn(columnName).getType() == type) {
-        switch(orderType) {
+        switch (orderType) {
           case ASCENDING:
             list.sort((CyRow row1, CyRow row2) -> compareAscendingOrder(row1, row2, columnName, type));
             break;
@@ -65,21 +65,17 @@ public abstract class AbstractBrewerScaleMapper implements FilterMapper {
     if (Objects.isNull(row1.get(columnName, type)) || Objects.isNull(row2.get(columnName, type))) {
       return -1;
     }
-    try {
-      return ((Comparable<Object>) (row1.get(columnName, type))).compareTo(row2.get(columnName, type));
-    } catch(Exception e){
-      System.out.println(e);
-      throw e;
-    }
+    return ((Comparable<Object>) (row1.get(columnName, type))).compareTo(row2.get(columnName, type));
   }
 
   private int compareDescendingOrder(CyRow row1, CyRow row2, String columnName, Class type) {
     if (Objects.isNull(row1.get(columnName, type)) || Objects.isNull(row2.get(columnName, type))) {
       return 1;
     }
-    return ((Comparable<Object>)(row2.get(columnName, type))).compareTo(row1.get(columnName, type));
+    return ((Comparable<Object>) (row2.get(columnName, type))).compareTo(row1.get(columnName, type));
   }
 
   protected abstract Optional<Color> getColor(CyRow row);
+
   protected abstract void validateColorBrewer(ColorBrewer colorBrewer);
 }

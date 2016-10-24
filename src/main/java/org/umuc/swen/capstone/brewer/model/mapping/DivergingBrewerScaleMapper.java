@@ -14,26 +14,21 @@ import org.umuc.swen.capstone.brewer.model.exception.InvalidElement;
 /**
  * Created by cwancowicz on 10/17/16.
  */
-public class DivergingBrewerScaleMapper<T> extends AbstractBrewerScaleMapper {
+public class DivergingBrewerScaleMapper<T extends Number> extends AbstractBrewerScaleMapper {
 
   private final Double maxValue;
   private final Integer colorScale;
-  private final List<Color> positiveColors;
-  private final List<Color> negativeColors;
   private final Class<T> type;
+  private List<Color> positiveColors;
+  private List<Color> negativeColors;
+  private Color zeroValueColor;
 
   public DivergingBrewerScaleMapper(String columnName, ColorBrewer colorBrewer, Double maxValue, Class<T> type) {
     super(colorBrewer, columnName, OrderType.ASCENDING);
     this.maxValue = maxValue;
     this.colorScale = 100;
     this.type = type;
-
-    validateType(type);
-
-    Color[] colors = colorBrewer.getColorPalette((colorScale*2) + 1);
-    this.negativeColors = Arrays.asList(Arrays.copyOfRange(colors, 0, colorScale));
-    this.positiveColors = Arrays.asList(Arrays.copyOfRange(colors, colorScale, colors.length));
-    Collections.reverse(negativeColors);
+    initializeColorScales();
   }
 
   @Override
@@ -49,10 +44,12 @@ public class DivergingBrewerScaleMapper<T> extends AbstractBrewerScaleMapper {
 
     T value = row.get(columnName, type);
 
+    if (isZero(value)) {
+      return Optional.of(zeroValueColor);
+    }
     if (isPositive(value)) {
       return Optional.of(positiveColors.get(getBucket(value)));
-    }
-    else {
+    } else {
       return Optional.of(negativeColors.get(getBucket(value)));
     }
   }
@@ -64,26 +61,47 @@ public class DivergingBrewerScaleMapper<T> extends AbstractBrewerScaleMapper {
     }
   }
 
+  /**
+   * Returns the bucket this value belongs to.
+   * i.e. if we have 5 colors in the positive scale and the value is 25% of the max value then we should return
+   * bucket 1:
+   * <p>
+   * |_| |_| |_| |_| |_|
+   * 0   1   2   3   4
+   *
+   * @param value
+   * @return
+   */
   private Integer getBucket(T value) {
-    if (value instanceof Double) {
-      return (int) Math.floor((Math.abs((Double) value) / maxValue) * colorScale);
-    }
-    else {
-      return (int) Math.floor((Math.abs((Integer) value) / maxValue) * colorScale);
-    }
+    return (int) Math.ceil((Math.abs(value.doubleValue()) / maxValue) * colorScale) - 1;
   }
 
   private boolean isPositive(T value) {
-    if (value instanceof Integer && (Integer)value >= 0) {
+    if (value.doubleValue() >= 0) {
       return true;
+    } else {
+      return false;
     }
-    return false;
   }
 
-  private void validateType(Class<T> type) {
-    if (type == Integer.class || type == Double.class) {
-      return;
+  private boolean isZero(T value) {
+    if (value.doubleValue() == 0) {
+      return true;
+    } else {
+      return false;
     }
-    throw new InvalidBrewerColorMapper(getMapType(), InvalidElement.INVALID_DATA_TYPE);
+  }
+
+  private void initializeColorScales() {
+    // create a color scale with 100 "negative colors" 1 color for zero and 100 "positive colors"
+    Color[] colors = colorBrewer.getColorPalette((colorScale * 2) + 1);
+    // create the negative scale based on the first 100 colors
+    this.negativeColors = Arrays.asList(Arrays.copyOfRange(colors, 0, colorScale));
+    // create the positive scale based on the last 100 colors
+    this.positiveColors = Arrays.asList(Arrays.copyOfRange(colors, colorScale + 1, colors.length));
+    // use the middle color in the scale for zero
+    this.zeroValueColor = colors[colorScale];
+    // we reverse the negative scale to make it easier to apply a value to a bucket
+    Collections.reverse(negativeColors);
   }
 }
