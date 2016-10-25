@@ -47,7 +47,8 @@ public class BrewerScaleMapperFactory {
     return new ContinuousBrewerScaleMapper(columnName, colorBrewer,
             cyNetwork.getDefaultNodeTable().getAllRows().stream()
                     .map(row -> row.get(columnName, Object.class))
-                    .collect(Collectors.toList())
+                    .collect(Collectors.toList()),
+            cyNetwork.getDefaultNodeTable().getColumn(columnName).getType()
     );
   }
 

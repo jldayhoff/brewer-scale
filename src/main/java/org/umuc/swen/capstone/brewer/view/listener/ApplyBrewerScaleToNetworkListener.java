@@ -4,17 +4,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.jcolorbrewer.ui.ColorPaletteChooserDialog;
 import org.umuc.swen.capstone.brewer.model.mapping.MapType;
-import org.umuc.swen.capstone.brewer.model.util.NetworkManagerUtil;
+import org.umuc.swen.capstone.brewer.model.util.ColorBrewerMapperUtil;
 
 /**
  * Created by cwancowicz on 9/24/16.
  */
 public class ApplyBrewerScaleToNetworkListener implements ActionListener {
 
-  private final NetworkManagerUtil networkManagerUtil;
+  private final ColorBrewerMapperUtil colorBrewerMapperUtil;
 
-  public ApplyBrewerScaleToNetworkListener(NetworkManagerUtil networkManagerUtil) {
-    this.networkManagerUtil = networkManagerUtil;
+  public ApplyBrewerScaleToNetworkListener(ColorBrewerMapperUtil colorBrewerMapperUtil) {
+    this.colorBrewerMapperUtil = colorBrewerMapperUtil;
   }
 
   @Override
@@ -22,7 +22,7 @@ public class ApplyBrewerScaleToNetworkListener implements ActionListener {
     ColorPaletteChooserDialog dialog = new ColorPaletteChooserDialog();
     dialog.showDialog();
     if (dialog.wasOKPressed()) {
-      networkManagerUtil.applyFilterToNetworks("degree.layout", dialog.getColorPalette(), MapType.DIVERGING);
+      colorBrewerMapperUtil.applyFilterToNetworks("degree.layout", dialog.getColorPalette(), MapType.CONTINUOUS);
     }
   }
 }

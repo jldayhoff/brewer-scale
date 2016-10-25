@@ -4,17 +4,17 @@ import java.awt.Component;
 import javax.swing.Icon;
 import org.cytoscape.application.swing.CytoPanelComponent;
 import org.cytoscape.application.swing.CytoPanelName;
-import org.umuc.swen.capstone.brewer.model.util.NetworkManagerUtil;
+import org.umuc.swen.capstone.brewer.model.util.ColorBrewerMapperUtil;
 import org.umuc.swen.capstone.brewer.view.BrewerScaleMainPanel;
 
 public class BrewerPanelComponent implements CytoPanelComponent {
 
-  private final static String TITLE = "Brewer Scale";
+  private final static String TITLE = "ColorBrewer";
 
   private final BrewerScaleMainPanel brewerScaleMainPanel;
 
-  public BrewerPanelComponent(NetworkManagerUtil networkManagerUtil) {
-    this.brewerScaleMainPanel = new BrewerScaleMainPanel(networkManagerUtil);
+  public BrewerPanelComponent(ColorBrewerMapperUtil colorBrewerMapperUtil) {
+    this.brewerScaleMainPanel = new BrewerScaleMainPanel(colorBrewerMapperUtil);
   }
 
   public Component getComponent() {

@@ -20,21 +20,17 @@ import org.cytoscape.view.model.CyNetworkViewManager;
 import org.jcolorbrewer.ColorBrewer;
 import org.umuc.swen.capstone.brewer.CyActivator;
 import org.umuc.swen.capstone.brewer.model.mapping.BrewerScaleMapperFactory;
-import org.umuc.swen.capstone.brewer.model.mapping.ContinuousBrewerScaleMapper;
-import org.umuc.swen.capstone.brewer.model.mapping.DiscreteBrewerScaleMapper;
-import org.umuc.swen.capstone.brewer.model.mapping.DivergingBrewerScaleMapper;
 import org.umuc.swen.capstone.brewer.model.mapping.FilterMapper;
 import org.umuc.swen.capstone.brewer.model.mapping.MapType;
-import org.umuc.swen.capstone.brewer.model.mapping.OrderType;
 
 /**
  * Created by cwancowicz on 9/24/16.
  */
-public class NetworkManagerUtil {
+public class ColorBrewerMapperUtil {
 
   private final CyActivator cyActivator;
 
-  public NetworkManagerUtil(CyActivator cyActivator) {
+  public ColorBrewerMapperUtil(CyActivator cyActivator) {
     this.cyActivator = cyActivator;
   }
 
