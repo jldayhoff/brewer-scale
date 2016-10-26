@@ -41,8 +41,8 @@
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Private-Package>${bundle.namespace}.*</Private-Package>
                         <Bundle-Activator>${bundle.namespace}.CyActivator</Bundle-Activator>
-                        <Import-Package>*,!com.google.gson</Import-Package>
-                        <Embed-Dependency>gson</Embed-Dependency>
+                        <Import-Package>*,!org.biojava</Import-Package>
+                        <Embed-Dependency>jcolorbrewer</Embed-Dependency>
                         <Include-Resource>{maven-resources}</Include-Resource>
                     </instructions>
                 </configuration>
@@ -136,9 +136,14 @@
             <version>4.12</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.7</version>
+            <groupId>org.biojava</groupId>
+            <artifactId>jcolorbrewer</artifactId>
+            <version>5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
         </dependency>
     </dependencies>
 

@@ -1,12 +1,31 @@
 package org.umuc.swen.capstone.brewer.model.util;
 
+import java.awt.Color;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.Stack;
+import java.util.stream.Collectors;
 import org.cytoscape.model.CyNetwork;
 import org.cytoscape.model.CyNetworkManager;
+import org.cytoscape.model.CyRow;
 import org.cytoscape.view.model.CyNetworkView;
 import org.cytoscape.view.model.CyNetworkViewManager;
+import org.jcolorbrewer.ColorBrewer;
 import org.umuc.swen.capstone.brewer.CyActivator;
+import org.umuc.swen.capstone.brewer.model.mapping.BrewerScaleMapperFactory;
+import org.umuc.swen.capstone.brewer.model.mapping.ContinuousBrewerScaleMapper;
+import org.umuc.swen.capstone.brewer.model.mapping.DiscreteBrewerScaleMapper;
+import org.umuc.swen.capstone.brewer.model.mapping.DivergingBrewerScaleMapper;
 import org.umuc.swen.capstone.brewer.model.mapping.FilterMapper;
+import org.umuc.swen.capstone.brewer.model.mapping.MapType;
+import org.umuc.swen.capstone.brewer.model.mapping.OrderType;
 
 /**
  * Created by cwancowicz on 9/24/16.
@@ -23,12 +42,11 @@ public class NetworkManagerUtil {
    * Applies a {@link FilterMapper} to each network available
    * in the {@link CyNetworkManager}
    *
-   * @param mapper {@link FilterMapper}
    */
-  public void applyFilterToNetworks(FilterMapper mapper) {
+  public void applyFilterToNetworks(String columnName, ColorBrewer colorBrewer, MapType mapType) {
     this.cyActivator.getNetworkManager().getNetworkSet()
             .stream()
-            .forEach(cyNetwork -> applyFilterToNetwork(cyNetwork, mapper));
+            .forEach(cyNetwork -> applyFilterToNetwork(cyNetwork, columnName, colorBrewer, mapType));
   }
 
   /**
@@ -36,15 +54,16 @@ public class NetworkManagerUtil {
    * {@link Collection} of {@link CyNetworkView}
    *
    * @param network {@link CyNetwork}
-   * @param mapper {@link FilterMapper}
    */
-  public void applyFilterToNetwork(CyNetwork network, FilterMapper mapper) {
+  public void applyFilterToNetwork(CyNetwork network, String columnName, ColorBrewer colorBrewer, MapType mapType) {
     CyNetworkViewManager viewManager = cyActivator.getNetworkViewManager();
     Collection<CyNetworkView> networkViews = viewManager.getNetworkViews(network);
-
-    network.getNodeList()
-            .stream()
-            .forEach(node -> mapper.applyFilterMapping(networkViews, node, network.getRow(node)));
+    FilterMapper mapper = BrewerScaleMapperFactory.createFilterMapper(network, columnName, colorBrewer, mapType);
+    List<CyRow> cyRows = mapper.sortRows(network.getDefaultNodeTable().getAllRows(), network.getDefaultNodeTable().getColumn(columnName).getType());
+    cyRows.stream()
+            .forEach(row -> mapper.applyFilterMapping(networkViews, network.getNode(row.get(CyNetwork.SUID, Long.class)), row));
     networkViews.stream().forEach(CyNetworkView::updateView);
   }
+
+
 }
