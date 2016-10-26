@@ -57,7 +57,7 @@ public class DivergingBrewerScaleMapper<T extends Number> extends AbstractBrewer
   @Override
   protected void validateColorBrewer(ColorBrewer colorBrewer) {
     if (!Arrays.asList(ColorBrewer.getDivergingColorPalettes(false)).contains(colorBrewer)) {
-      throw new InvalidBrewerColorMapper(MapType.DISCRETE, InvalidElement.EXPECTED_DIVERGING_PALETTE);
+      throw new InvalidBrewerColorMapper(getMapType(), InvalidElement.EXPECTED_DIVERGING_PALETTE);
     }
   }
 

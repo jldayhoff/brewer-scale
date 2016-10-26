@@ -37,7 +37,6 @@ public class ColorBrewerMapperUtil {
   /**
    * Applies a {@link FilterMapper} to each network available
    * in the {@link CyNetworkManager}
-   *
    */
   public void applyFilterToNetworks(String columnName, ColorBrewer colorBrewer, MapType mapType) {
     this.cyActivator.getNetworkManager().getNetworkSet()
@@ -55,9 +54,10 @@ public class ColorBrewerMapperUtil {
     CyNetworkViewManager viewManager = cyActivator.getNetworkViewManager();
     Collection<CyNetworkView> networkViews = viewManager.getNetworkViews(network);
     FilterMapper mapper = BrewerScaleMapperFactory.createFilterMapper(network, columnName, colorBrewer, mapType);
-    List<CyRow> cyRows = mapper.sortRows(network.getDefaultNodeTable().getAllRows(), network.getDefaultNodeTable().getColumn(columnName).getType());
-    cyRows.stream()
-            .forEach(row -> mapper.applyFilterMapping(networkViews, network.getNode(row.get(CyNetwork.SUID, Long.class)), row));
+    network.getDefaultNodeTable().getAllRows()
+            .stream()
+            .forEach(row -> mapper.applyFilterMapping(
+                    networkViews, network.getNode(row.get(CyNetwork.SUID, Long.class)), row));
     networkViews.stream().forEach(CyNetworkView::updateView);
   }
 

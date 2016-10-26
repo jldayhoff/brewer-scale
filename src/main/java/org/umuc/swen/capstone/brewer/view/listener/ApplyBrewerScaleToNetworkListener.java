@@ -22,7 +22,7 @@ public class ApplyBrewerScaleToNetworkListener implements ActionListener {
     ColorPaletteChooserDialog dialog = new ColorPaletteChooserDialog();
     dialog.showDialog();
     if (dialog.wasOKPressed()) {
-      colorBrewerMapperUtil.applyFilterToNetworks("degree.layout", dialog.getColorPalette(), MapType.CONTINUOUS);
+      colorBrewerMapperUtil.applyFilterToNetworks("gal80Rexp", dialog.getColorPalette(), MapType.DIVERGING);
     }
   }
 }

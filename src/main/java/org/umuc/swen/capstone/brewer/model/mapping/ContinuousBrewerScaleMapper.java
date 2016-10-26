@@ -56,7 +56,7 @@ public class ContinuousBrewerScaleMapper<T extends Number> extends AbstractBrewe
   @Override
   protected void validateColorBrewer(ColorBrewer colorBrewer) {
     if (!Arrays.asList(ColorBrewer.getSequentialColorPalettes(false)).contains(colorBrewer)) {
-      throw new InvalidBrewerColorMapper(MapType.DISCRETE, InvalidElement.EXPECTED_SEQUENTIAL_PALETTE);
+      throw new InvalidBrewerColorMapper(getMapType(), InvalidElement.EXPECTED_SEQUENTIAL_PALETTE);
     }
   }
 
