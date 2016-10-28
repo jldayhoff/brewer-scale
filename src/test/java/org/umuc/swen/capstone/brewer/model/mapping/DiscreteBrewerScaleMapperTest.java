@@ -51,7 +51,7 @@ public class DiscreteBrewerScaleMapperTest {
 
     when(row.get(columnName, Object.class)).thenReturn("v1");
     when(cyNetworkView.getNodeView(node)).thenReturn(view);
-    DiscreteBrewerScaleMapper discreteBrewerScaleMapper = new DiscreteBrewerScaleMapper(values, colorBrewer, columnName, OrderType.ASCENDING);
+    DiscreteBrewerScaleMapper discreteBrewerScaleMapper = new DiscreteBrewerScaleMapper(values, colorBrewer, columnName);
 
     discreteBrewerScaleMapper.applyFilterMapping(Arrays.asList(cyNetworkView), node, row);
 

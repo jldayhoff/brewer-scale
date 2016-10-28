@@ -20,13 +20,9 @@ public class DiscreteBrewerScaleMapper<T> extends AbstractBrewerScaleMapper {
 
   private Map<T, Color> valueColorMap = null;
 
-  public DiscreteBrewerScaleMapper(final Set<T> values, ColorBrewer colorBrewer, String columnName, OrderType orderType) {
-    super(colorBrewer, columnName, orderType);
-    createValueColorMap(values, colorBrewer);
-  }
-
   public DiscreteBrewerScaleMapper(final Set<T> values, ColorBrewer colorBrewer, String columnName) {
-    this(values, colorBrewer, columnName, OrderType.NONE);
+    super(colorBrewer, columnName);
+    createValueColorMap(values, colorBrewer);
   }
 
   @Override

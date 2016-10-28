@@ -21,9 +21,8 @@ public class ContinuousBrewerScaleMapper<T extends Number> extends AbstractBrewe
   private final List<Color> colors;
   private final Class<T> type;
 
-  public ContinuousBrewerScaleMapper(String columnName, ColorBrewer colorBrewer, List<T> values, OrderType orderType,
-                                     Class<T> type) {
-    super(colorBrewer, columnName, orderType);
+  public ContinuousBrewerScaleMapper(String columnName, ColorBrewer colorBrewer, List<T> values, Class<T> type) {
+    super(colorBrewer, columnName);
     this.colorScale = 100;
     this.colors = Arrays.asList(colorBrewer.getColorPalette(this.colorScale));
     this.maxValue = values.stream()
@@ -31,10 +30,6 @@ public class ContinuousBrewerScaleMapper<T extends Number> extends AbstractBrewe
             .max((d1, d2) -> d1.compareTo(d2))
             .orElseThrow(() -> new InvalidDataException(columnName));
     this.type = type;
-  }
-
-  public ContinuousBrewerScaleMapper(String columnName, ColorBrewer colorBrewer, List<T> values, Class<T> type) {
-    this(columnName, colorBrewer, values, OrderType.ASCENDING, type);
   }
 
   @Override
