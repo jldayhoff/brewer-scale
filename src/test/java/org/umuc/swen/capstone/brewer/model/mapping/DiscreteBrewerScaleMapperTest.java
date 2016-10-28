@@ -2,6 +2,7 @@ package org.umuc.swen.capstone.brewer.model.mapping;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import org.cytoscape.model.CyNode;
@@ -9,6 +10,7 @@ import org.cytoscape.model.CyRow;
 import org.cytoscape.view.model.CyNetworkView;
 import org.cytoscape.view.model.View;
 import org.jcolorbrewer.ColorBrewer;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,6 +19,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import org.umuc.swen.capstone.brewer.model.exception.InvalidBrewerColorMapper;
 
 /**
  * Created by cwancowicz on 10/15/16.
@@ -54,5 +57,17 @@ public class DiscreteBrewerScaleMapperTest {
 
     // verify we are getting a color
     verify(view).setLockedValue(any(), any(Color.class));
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenColorBrewerIsNotQualitativeType() {
+    exception.expect(InvalidBrewerColorMapper.class);
+    new DiscreteBrewerScaleMapper(Collections.emptySet(), ColorBrewer.Blues, columnName);
+  }
+
+  @Test
+  public void shouldReturnDiscreteMapType() {
+    assertEquals(MapType.DISCRETE,
+            new DiscreteBrewerScaleMapper(Collections.emptySet(), ColorBrewer.Accent, columnName).getMapType());
   }
 }

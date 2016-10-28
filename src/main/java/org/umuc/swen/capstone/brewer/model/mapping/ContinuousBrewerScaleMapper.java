@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.cytoscape.model.CyRow;
 import org.jcolorbrewer.ColorBrewer;
 import org.umuc.swen.capstone.brewer.model.exception.InvalidBrewerColorMapper;
+import org.umuc.swen.capstone.brewer.model.exception.InvalidDataException;
 import org.umuc.swen.capstone.brewer.model.exception.InvalidElement;
 
 /**
@@ -28,7 +29,7 @@ public class ContinuousBrewerScaleMapper<T extends Number> extends AbstractBrewe
     this.maxValue = values.stream()
             .map(value -> Double.valueOf(Math.abs(value.doubleValue())))
             .max((d1, d2) -> d1.compareTo(d2))
-            .get();
+            .orElseThrow(() -> new InvalidDataException(columnName));
     this.type = type;
   }
 
