@@ -46,8 +46,7 @@ public class DivergingBrewerScaleMapper<T extends Number> extends AbstractBrewer
 
     if (isZero(value)) {
       return Optional.of(zeroValueColor);
-    }
-    if (isPositive(value)) {
+    } else if (isPositive(value)) {
       return Optional.of(positiveColors.get(getBucket(value)));
     } else {
       return Optional.of(negativeColors.get(getBucket(value)));
@@ -57,7 +56,7 @@ public class DivergingBrewerScaleMapper<T extends Number> extends AbstractBrewer
   @Override
   protected void validateColorBrewer(ColorBrewer colorBrewer) {
     if (!Arrays.asList(ColorBrewer.getDivergingColorPalettes(false)).contains(colorBrewer)) {
-      throw new InvalidBrewerColorMapper(MapType.DISCRETE, InvalidElement.EXPECTED_DIVERGING_PALETTE);
+      throw new InvalidBrewerColorMapper(getMapType(), InvalidElement.EXPECTED_DIVERGING_PALETTE);
     }
   }
 
@@ -67,7 +66,7 @@ public class DivergingBrewerScaleMapper<T extends Number> extends AbstractBrewer
    * bucket 1:
    * <p>
    * |_| |_| |_| |_| |_|
-   * 0   1   2   3   4
+   *  0   1   2   3   4
    *
    * @param value
    * @return
@@ -77,19 +76,11 @@ public class DivergingBrewerScaleMapper<T extends Number> extends AbstractBrewer
   }
 
   private boolean isPositive(T value) {
-    if (value.doubleValue() >= 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return value.doubleValue() >= 0;
   }
 
   private boolean isZero(T value) {
-    if (value.doubleValue() == 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return value.doubleValue() == 0;
   }
 
   private void initializeColorScales() {

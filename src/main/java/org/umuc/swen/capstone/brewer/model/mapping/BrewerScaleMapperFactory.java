@@ -1,11 +1,5 @@
 package org.umuc.swen.capstone.brewer.model.mapping;
 
-import java.awt.Color;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,8 +15,18 @@ import org.umuc.swen.capstone.brewer.model.exception.InvalidElement;
  */
 public class BrewerScaleMapperFactory {
 
-  public static FilterMapper createFilterMapper(CyNetwork cyNetwork, String columnName, ColorBrewer colorBrewer, MapType mapType) {
-
+  /**
+   * Creates a {@link FilterMapper} of type {@link MapType} for applying the {@link ColorBrewer}
+   * palette to the {@link CyNetwork}.
+   *
+   * @param cyNetwork   {@link CyNetwork}
+   * @param columnName  {@link String}
+   * @param colorBrewer {@link ColorBrewer}
+   * @param mapType     {@link MapType}
+   * @return {@link FilterMapper}
+   */
+  public static FilterMapper createFilterMapper(CyNetwork cyNetwork, String columnName,
+                                                ColorBrewer colorBrewer, MapType mapType) {
     switch (mapType) {
       case DISCRETE:
         return createDiscreteFilterMapper(columnName, colorBrewer, cyNetwork);
@@ -35,7 +39,8 @@ public class BrewerScaleMapperFactory {
     }
   }
 
-  private static FilterMapper createDiscreteFilterMapper(String columnName, ColorBrewer colorBrewer, CyNetwork cyNetwork) {
+  private static FilterMapper createDiscreteFilterMapper(String columnName, ColorBrewer colorBrewer,
+                                                         CyNetwork cyNetwork) {
     Set<Object> values = cyNetwork.getDefaultNodeTable().getAllRows()
             .stream()
             .map(row -> row.get(columnName, Object.class))
@@ -43,39 +48,37 @@ public class BrewerScaleMapperFactory {
     return new DiscreteBrewerScaleMapper(values, colorBrewer, columnName);
   }
 
-  private static FilterMapper createSequentialFilterMapper(String columnName, ColorBrewer colorBrewer, CyNetwork cyNetwork) {
+  private static FilterMapper createSequentialFilterMapper(String columnName, ColorBrewer colorBrewer,
+                                                           CyNetwork cyNetwork) {
     return new ContinuousBrewerScaleMapper(columnName, colorBrewer,
             cyNetwork.getDefaultNodeTable().getAllRows().stream()
                     .map(row -> row.get(columnName, Object.class))
-                    .collect(Collectors.toList())
+                    .collect(Collectors.toList()),
+            cyNetwork.getDefaultNodeTable().getColumn(columnName).getType()
     );
   }
 
-  private static FilterMapper createDivergentFilterMapper(String columnName, ColorBrewer colorBrewer, CyNetwork cyNetwork) {
+  private static FilterMapper createDivergentFilterMapper(String columnName, ColorBrewer colorBrewer,
+                                                          CyNetwork cyNetwork) {
     Class type = cyNetwork.getDefaultNodeTable().getColumn(columnName).getType();
-    Integer maxValue;
-    if (type == Integer.class) {
-      CyRow cyRow = cyNetwork.getDefaultNodeTable().getAllRows()
-              .stream()
-              .filter(row -> Objects.nonNull(row.get(columnName, Integer.class)))
-              .max((row1, row2) -> Integer.valueOf(Math.abs(row1.get(columnName, Integer.class)))
-                      .compareTo(Integer.valueOf(Math.abs(row2.get(columnName, Integer.class)))))
-              .orElseThrow(() -> new InvalidDataException(columnName));
-      maxValue = Math.abs(cyRow.get(columnName, Integer.class));
-    }
-    else if (type == Double.class) {
-      CyRow cyRow = cyNetwork.getDefaultNodeTable().getAllRows()
-              .stream()
-              .filter(row -> Objects.nonNull(row.get(columnName, Double.class)))
-              .max((row1, row2) -> Double.valueOf(Math.abs(row1.get(columnName, Double.class)))
-                      .compareTo(Double.valueOf(Math.abs(row2.get(columnName, Double.class)))))
-              .orElseThrow(() -> new InvalidDataException(columnName));
-      maxValue = Double.valueOf(Math.ceil(Math.abs(cyRow.get(columnName, Double.class)))).intValue();
-    }
-    else {
+    Double maxValue;
+
+    if (type.getSuperclass() == Number.class) {
+      maxValue = getMaxValue(type, cyNetwork, columnName);
+    } else {
       throw new InvalidBrewerColorMapper(MapType.DIVERGING, InvalidElement.INVALID_DATA_TYPE);
     }
 
-    return new DivergingBrewerScaleMapper(columnName, colorBrewer, maxValue.doubleValue(), type);
+    return new DivergingBrewerScaleMapper(columnName, colorBrewer, maxValue, type);
+  }
+
+  private static <T extends Number> Double getMaxValue(Class<T> type, CyNetwork cyNetwork, String columnName) {
+    CyRow cyRow = cyNetwork.getDefaultNodeTable().getAllRows()
+            .stream()
+            .filter(row -> Objects.nonNull(row.get(columnName, type)))
+            .max((row1, row2) -> Double.valueOf(Math.abs(row1.get(columnName, type).doubleValue()))
+                    .compareTo(Double.valueOf(Math.abs(row2.get(columnName, type).doubleValue()))))
+            .orElseThrow(() -> new InvalidDataException(columnName));
+    return Math.abs(cyRow.get(columnName, type).doubleValue());
   }
 }

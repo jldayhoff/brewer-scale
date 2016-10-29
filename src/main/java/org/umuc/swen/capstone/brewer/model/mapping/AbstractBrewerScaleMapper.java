@@ -2,8 +2,6 @@ package org.umuc.swen.capstone.brewer.model.mapping;
 
 import java.awt.Color;
 import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.cytoscape.model.CyNode;
 import org.cytoscape.model.CyRow;
@@ -37,42 +35,8 @@ public abstract class AbstractBrewerScaleMapper implements FilterMapper {
   }
 
   @Override
-  public List<CyRow> sortRows(List<CyRow> list, Class type) {
-    if (Objects.nonNull(list) && !list.isEmpty()) {
-      if (list.get(0).getTable().getColumn(columnName).getType() == type) {
-        switch (orderType) {
-          case ASCENDING:
-            list.sort((CyRow row1, CyRow row2) -> compareAscendingOrder(row1, row2, columnName, type));
-            break;
-          case DESCENDING:
-            list.sort((CyRow row1, CyRow row2) -> compareDescendingOrder(row1, row2, columnName, type));
-            break;
-          case NONE:
-            break;
-        }
-      }
-    }
-    return list;
-  }
-
-  @Override
   public OrderType getOrderType() {
     return orderType;
-  }
-
-  private int compareAscendingOrder(CyRow row1, CyRow row2, String columnName, Class type) {
-
-    if (Objects.isNull(row1.get(columnName, type)) || Objects.isNull(row2.get(columnName, type))) {
-      return -1;
-    }
-    return ((Comparable<Object>) (row1.get(columnName, type))).compareTo(row2.get(columnName, type));
-  }
-
-  private int compareDescendingOrder(CyRow row1, CyRow row2, String columnName, Class type) {
-    if (Objects.isNull(row1.get(columnName, type)) || Objects.isNull(row2.get(columnName, type))) {
-      return 1;
-    }
-    return ((Comparable<Object>) (row2.get(columnName, type))).compareTo(row1.get(columnName, type));
   }
 
   protected abstract Optional<Color> getColor(CyRow row);

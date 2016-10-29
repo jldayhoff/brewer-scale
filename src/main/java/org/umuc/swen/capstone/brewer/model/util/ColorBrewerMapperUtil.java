@@ -20,28 +20,23 @@ import org.cytoscape.view.model.CyNetworkViewManager;
 import org.jcolorbrewer.ColorBrewer;
 import org.umuc.swen.capstone.brewer.CyActivator;
 import org.umuc.swen.capstone.brewer.model.mapping.BrewerScaleMapperFactory;
-import org.umuc.swen.capstone.brewer.model.mapping.ContinuousBrewerScaleMapper;
-import org.umuc.swen.capstone.brewer.model.mapping.DiscreteBrewerScaleMapper;
-import org.umuc.swen.capstone.brewer.model.mapping.DivergingBrewerScaleMapper;
 import org.umuc.swen.capstone.brewer.model.mapping.FilterMapper;
 import org.umuc.swen.capstone.brewer.model.mapping.MapType;
-import org.umuc.swen.capstone.brewer.model.mapping.OrderType;
 
 /**
  * Created by cwancowicz on 9/24/16.
  */
-public class NetworkManagerUtil {
+public class ColorBrewerMapperUtil {
 
   private final CyActivator cyActivator;
 
-  public NetworkManagerUtil(CyActivator cyActivator) {
+  public ColorBrewerMapperUtil(CyActivator cyActivator) {
     this.cyActivator = cyActivator;
   }
 
   /**
    * Applies a {@link FilterMapper} to each network available
    * in the {@link CyNetworkManager}
-   *
    */
   public void applyFilterToNetworks(String columnName, ColorBrewer colorBrewer, MapType mapType) {
     this.cyActivator.getNetworkManager().getNetworkSet()
@@ -59,9 +54,10 @@ public class NetworkManagerUtil {
     CyNetworkViewManager viewManager = cyActivator.getNetworkViewManager();
     Collection<CyNetworkView> networkViews = viewManager.getNetworkViews(network);
     FilterMapper mapper = BrewerScaleMapperFactory.createFilterMapper(network, columnName, colorBrewer, mapType);
-    List<CyRow> cyRows = mapper.sortRows(network.getDefaultNodeTable().getAllRows(), network.getDefaultNodeTable().getColumn(columnName).getType());
-    cyRows.stream()
-            .forEach(row -> mapper.applyFilterMapping(networkViews, network.getNode(row.get(CyNetwork.SUID, Long.class)), row));
+    network.getDefaultNodeTable().getAllRows()
+            .stream()
+            .forEach(row -> mapper.applyFilterMapping(
+                    networkViews, network.getNode(row.get(CyNetwork.SUID, Long.class)), row));
     networkViews.stream().forEach(CyNetworkView::updateView);
   }
 

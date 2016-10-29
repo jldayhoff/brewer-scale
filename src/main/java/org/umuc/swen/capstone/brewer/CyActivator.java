@@ -8,7 +8,7 @@ import org.cytoscape.model.CyNetworkManager;
 import org.cytoscape.service.util.AbstractCyActivator;
 import org.cytoscape.view.model.CyNetworkViewManager;
 import org.osgi.framework.BundleContext;
-import org.umuc.swen.capstone.brewer.model.util.NetworkManagerUtil;
+import org.umuc.swen.capstone.brewer.model.util.ColorBrewerMapperUtil;
 
 
 public class CyActivator extends AbstractCyActivator {
@@ -20,11 +20,11 @@ public class CyActivator extends AbstractCyActivator {
   private CyNetworkManager networkManager;
   private CyNetworkViewManager networkViewManager;
 
-  final private NetworkManagerUtil networkManagerUtil;
+  final private ColorBrewerMapperUtil colorBrewerMapperUtil;
 
   public CyActivator() {
     super();
-    networkManagerUtil = new NetworkManagerUtil(this);
+    colorBrewerMapperUtil = new ColorBrewerMapperUtil(this);
   }
 
   public void start(BundleContext bundleContext) {
@@ -47,7 +47,7 @@ public class CyActivator extends AbstractCyActivator {
   }
 
   private void registerServices(BundleContext bundleContext) {
-    brewerPanelComponent = new BrewerPanelComponent(networkManagerUtil);
+    brewerPanelComponent = new BrewerPanelComponent(colorBrewerMapperUtil);
     controlPanelAction = new ControlPanelAction(swingApplicationService, brewerPanelComponent);
     registerService(bundleContext, brewerPanelComponent, CytoPanelComponent.class, new Properties());
     registerService(bundleContext, controlPanelAction, CyAction.class, new Properties());

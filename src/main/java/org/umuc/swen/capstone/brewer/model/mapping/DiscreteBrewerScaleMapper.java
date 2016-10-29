@@ -43,7 +43,7 @@ public class DiscreteBrewerScaleMapper<T> extends AbstractBrewerScaleMapper {
   @Override
   protected void validateColorBrewer(ColorBrewer colorBrewer) {
     if (!Arrays.asList(ColorBrewer.getQualitativeColorPalettes(false)).contains(colorBrewer)) {
-      throw new InvalidBrewerColorMapper(MapType.DISCRETE, InvalidElement.EXPECTED_QUALITATIVE_PALETTE);
+      throw new InvalidBrewerColorMapper(getMapType(), InvalidElement.EXPECTED_QUALITATIVE_PALETTE);
     }
   }
 
