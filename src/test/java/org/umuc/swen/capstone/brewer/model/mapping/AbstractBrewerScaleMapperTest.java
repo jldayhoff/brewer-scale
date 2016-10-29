@@ -1,13 +1,19 @@
 package org.umuc.swen.capstone.brewer.model.mapping;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.awt.Color;
+import java.util.Arrays;
+import java.util.Optional;
+import org.cytoscape.model.CyNode;
 import org.cytoscape.model.CyRow;
+import org.cytoscape.view.model.CyNetworkView;
+import org.cytoscape.view.model.View;
+import org.cytoscape.view.presentation.property.BasicVisualLexicon;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -15,42 +21,29 @@ import static org.mockito.Mockito.when;
  */
 public class AbstractBrewerScaleMapperTest {
 
-  private static final Random RANDOM = new Random();
-  private List<CyRow> cyRows;
+  private AbstractBrewerScaleMapper abstractBrewerScaleMapper;
 
-  private AbstractBrewerScaleMapper abstractBrewerScaleMapper = mock(AbstractBrewerScaleMapper.class,  Mockito.CALLS_REAL_METHODS);
+  private CyNetworkView cyNetworkView;
+  private CyNode cyNode;
+  private CyRow cyRow;
+  private View<CyNode> view;
 
   @Before
   public void setUp() {
-    cyRows = new ArrayList();
-
+    abstractBrewerScaleMapper = mock(AbstractBrewerScaleMapper.class);
+    cyNetworkView = mock(CyNetworkView.class);
+    cyNode = mock(CyNode.class);
+    cyRow = mock(CyRow.class);
+    view = mock(View.class);
   }
 
-//  @Test
-//  public void shouldTestSortInAscendingOrderInteger() {
-//    int size = 72;
-//    String columnName = "test";
-//    Class type = Integer.class;
-//    List<CyRow> rows = createRows(RANDOM.nextInt(), columnName, type);
-//
-//    abstractBrewerScaleMapper.sortRows(rows, )
-//  }
-
-  private List<CyRow> createRows(int size, String columnName, Class type) {
-    List<CyRow> rows = new ArrayList();
-    for (int i = 0; i < size; i++) {
-      CyRow row = mock(CyRow.class);
-      if (type == Integer.class) {
-        when(row.get(columnName, type)).thenReturn(RANDOM.nextInt());
-      }
-      else if (type == Double.class){
-        when(row.get(columnName, type)).thenReturn(RANDOM.nextDouble());
-      }
-      else {
-        when(row.get(columnName, type)).thenReturn(RANDOM.nextLong());
-      }
-      rows.add(row);
-    }
-    return rows;
+  @Test
+  public void shouldApplyColorToNode() {
+    Color blue = Color.BLUE;
+    when(cyNetworkView.getNodeView(cyNode)).thenReturn(view);
+    when(abstractBrewerScaleMapper.getColor(cyRow)).thenReturn(Optional.of(blue));
+    doCallRealMethod().when(abstractBrewerScaleMapper).applyFilterMapping(any(), any(), any());
+    abstractBrewerScaleMapper.applyFilterMapping(Arrays.asList(cyNetworkView), cyNode, cyRow);
+    verify(view).setLockedValue(BasicVisualLexicon.NODE_FILL_COLOR, blue);
   }
 }

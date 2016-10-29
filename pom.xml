@@ -11,6 +11,7 @@
         <osgi.api.version>4.2.0</osgi.api.version>
         <bundle.symbolicname>org.umuc.swen</bundle.symbolicname>
         <bundle.namespace>org.umuc.swen.capstone.brewer</bundle.namespace>
+        <powermock.version>1.6.5</powermock.version>
     </properties>
 
     <groupId>org.umuc.swen</groupId>
@@ -135,14 +136,22 @@
             <version>5.2</version>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.9.5</version>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
             <version>1.7.21</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

@@ -9,41 +9,39 @@ import org.cytoscape.view.model.CyNetworkView;
 import org.cytoscape.view.model.View;
 import org.jcolorbrewer.ColorBrewer;
 import static org.junit.Assert.assertEquals;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
+import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.umuc.swen.capstone.brewer.model.exception.InvalidBrewerColorMapper;
 
 /**
  * Created by cwancowicz on 10/25/16.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class DivergingBrewerScaleMapperTest {
 
   private static final Random RANDOM = new Random();
   private Double maxValue = RANDOM.nextDouble() + 100;
   private String columnName = "testColumn";
 
+  @Mock
   private CyNetworkView cyNetworkView;
+  @Mock
   private CyNode node;
+  @Mock
   private CyRow row;
+  @Mock
   private View<CyNode> view;
 
   @Rule
   public ExpectedException exception = ExpectedException.none();
-
-  @Before
-  public void setUp() {
-    cyNetworkView = mock(CyNetworkView.class);
-    node = mock(CyNode.class);
-    row = mock(CyRow.class);
-    view = mock(View.class);
-  }
 
   @Test
   public void shouldGetZeroColor() {
@@ -79,7 +77,7 @@ public class DivergingBrewerScaleMapperTest {
     divergingMapper.applyFilterMapping(Arrays.asList(cyNetworkView), node, row);
 
     // color should be from the positive scale (+100 and 1 for zero) and at the 72nd spot (-1 for 0 index)
-    verify(view).setLockedValue(any(), eq(colors[101 + value-1]));
+    verify(view).setLockedValue(any(), eq(colors[101 + value - 1]));
   }
 
   @Test
