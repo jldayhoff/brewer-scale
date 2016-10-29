@@ -73,7 +73,6 @@ public class DivergingBrewerScaleMapperTest {
     when(cyNetworkView.getNodeView(node)).thenReturn(view);
 
     DivergingBrewerScaleMapper divergingMapper = new DivergingBrewerScaleMapper(columnName, colorBrewer, maxValue, type);
-
     divergingMapper.applyFilterMapping(Arrays.asList(cyNetworkView), node, row);
 
     // color should be from the positive scale (+100 and 1 for zero) and at the 72nd spot (-1 for 0 index)
@@ -92,12 +91,49 @@ public class DivergingBrewerScaleMapperTest {
     when(cyNetworkView.getNodeView(node)).thenReturn(view);
 
     DivergingBrewerScaleMapper divergingMapper = new DivergingBrewerScaleMapper(columnName, colorBrewer, maxValue, type);
-
     divergingMapper.applyFilterMapping(Arrays.asList(cyNetworkView), node, row);
 
     // color should be from the negative scale. Add 100 colors because we reverse the negative scale and add -13 since this is our value
     verify(view).setLockedValue(any(), eq(colors[100 + value.intValue()]));
   }
+
+  @Test
+  public void shouldGetLastColorFromNegativeScaleWhenAssigningValueIsNegativeAndMaxValue() {
+    ColorBrewer colorBrewer = ColorBrewer.BrBG;
+    Color[] colors = getColorsFromPalette(colorBrewer);
+    Class type = Double.class;
+    Double maxValue = RANDOM.nextInt(1000)+RANDOM.nextDouble();
+    Double value = maxValue*-1;
+
+    when(row.get(columnName, type)).thenReturn(value);
+    when(cyNetworkView.getNodeView(node)).thenReturn(view);
+
+    DivergingBrewerScaleMapper divergingMapper = new DivergingBrewerScaleMapper(columnName, colorBrewer, maxValue, type);
+    divergingMapper.applyFilterMapping(Arrays.asList(cyNetworkView), node, row);
+
+    // color should be from the negative scale and since it's the max, should be the darkest
+    verify(view).setLockedValue(any(), eq(colors[0]));
+  }
+
+  @Test
+  public void shouldGetLastColorFromPositiveScaleWhenAssigningValueIsPositiveAndMaxValue() {
+    ColorBrewer colorBrewer = ColorBrewer.BrBG;
+    Color[] colors = getColorsFromPalette(colorBrewer);
+    Class type = Integer.class;
+    Double maxValue = RANDOM.nextInt(1000)+0.0;
+    Integer value = maxValue.intValue();
+
+    when(row.get(columnName, type)).thenReturn(value);
+    when(cyNetworkView.getNodeView(node)).thenReturn(view);
+
+    DivergingBrewerScaleMapper divergingMapper = new DivergingBrewerScaleMapper(columnName, colorBrewer, maxValue, type);
+
+    divergingMapper.applyFilterMapping(Arrays.asList(cyNetworkView), node, row);
+
+    // color should be from the negative scale and since it's the max, should be the darkest
+    verify(view).setLockedValue(any(), eq(colors[colors.length-1]));
+  }
+
 
   @Test
   public void shouldThrowExceptionWhenColorBrewerIsTypeQualitative() {

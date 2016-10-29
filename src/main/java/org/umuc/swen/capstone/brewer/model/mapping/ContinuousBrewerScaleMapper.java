@@ -46,7 +46,7 @@ public class ContinuousBrewerScaleMapper<T extends Number> extends AbstractBrewe
    * @return
    */
   private Integer getBucket(T value) {
-    return (int) Math.ceil((Math.abs(value.doubleValue()) / maxValue) * colorScale) - 1;
+    return Math.max(0, (int) Math.ceil((Math.abs(value.doubleValue()) / maxValue) * colorScale) - 1);
   }
 
   @Override
