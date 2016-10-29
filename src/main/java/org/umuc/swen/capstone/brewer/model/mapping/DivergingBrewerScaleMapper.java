@@ -24,7 +24,7 @@ public class DivergingBrewerScaleMapper<T extends Number> extends AbstractBrewer
   private Color zeroValueColor;
 
   public DivergingBrewerScaleMapper(String columnName, ColorBrewer colorBrewer, Double maxValue, Class<T> type) {
-    super(colorBrewer, columnName, OrderType.ASCENDING);
+    super(colorBrewer, columnName);
     this.maxValue = maxValue;
     this.colorScale = 100;
     this.type = type;

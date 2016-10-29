@@ -11,5 +11,4 @@ import org.cytoscape.view.model.CyNetworkView;
 public interface FilterMapper {
   void applyFilterMapping(Collection<CyNetworkView> networkViews, CyNode node, CyRow row);
   MapType getMapType();
-  OrderType getOrderType();
 }

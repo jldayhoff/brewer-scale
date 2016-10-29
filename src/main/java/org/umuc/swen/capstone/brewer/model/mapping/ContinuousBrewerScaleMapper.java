@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.cytoscape.model.CyRow;
 import org.jcolorbrewer.ColorBrewer;
 import org.umuc.swen.capstone.brewer.model.exception.InvalidBrewerColorMapper;
+import org.umuc.swen.capstone.brewer.model.exception.InvalidDataException;
 import org.umuc.swen.capstone.brewer.model.exception.InvalidElement;
 
 /**
@@ -20,20 +21,15 @@ public class ContinuousBrewerScaleMapper<T extends Number> extends AbstractBrewe
   private final List<Color> colors;
   private final Class<T> type;
 
-  public ContinuousBrewerScaleMapper(String columnName, ColorBrewer colorBrewer, List<T> values, OrderType orderType,
-                                     Class<T> type) {
-    super(colorBrewer, columnName, orderType);
+  public ContinuousBrewerScaleMapper(String columnName, ColorBrewer colorBrewer, List<T> values, Class<T> type) {
+    super(colorBrewer, columnName);
     this.colorScale = 100;
     this.colors = Arrays.asList(colorBrewer.getColorPalette(this.colorScale));
     this.maxValue = values.stream()
             .map(value -> Double.valueOf(Math.abs(value.doubleValue())))
             .max((d1, d2) -> d1.compareTo(d2))
-            .get();
+            .orElseThrow(() -> new InvalidDataException(columnName));
     this.type = type;
-  }
-
-  public ContinuousBrewerScaleMapper(String columnName, ColorBrewer colorBrewer, List<T> values, Class<T> type) {
-    this(columnName, colorBrewer, values, OrderType.ASCENDING, type);
   }
 
   @Override
@@ -50,7 +46,7 @@ public class ContinuousBrewerScaleMapper<T extends Number> extends AbstractBrewe
    * @return
    */
   private Integer getBucket(T value) {
-    return (int) Math.ceil((Math.abs(value.doubleValue()) / maxValue) * colorScale) - 1;
+    return Math.max(0, (int) Math.ceil((Math.abs(value.doubleValue()) / maxValue) * colorScale) - 1);
   }
 
   @Override

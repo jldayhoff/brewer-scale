@@ -20,19 +20,9 @@ public class DiscreteBrewerScaleMapper<T> extends AbstractBrewerScaleMapper {
 
   private Map<T, Color> valueColorMap = null;
 
-  public DiscreteBrewerScaleMapper(final Set<T> values, ColorBrewer colorBrewer, String columnName, OrderType orderType) {
-    super(colorBrewer, columnName, orderType);
-    createValueColorMap(values, colorBrewer);
-  }
-
-  private void createValueColorMap(Set<T> values, ColorBrewer colorBrewer) {
-    Stack<Color> colors = new Stack();
-    colors.addAll(Arrays.asList(colorBrewer.getColorPalette(values.size())));
-    valueColorMap = values.stream().collect(Collectors.toMap(Function.identity(), value -> colors.pop()));
-  }
-
   public DiscreteBrewerScaleMapper(final Set<T> values, ColorBrewer colorBrewer, String columnName) {
-    this(values, colorBrewer, columnName, OrderType.NONE);
+    super(colorBrewer, columnName);
+    createValueColorMap(values, colorBrewer);
   }
 
   @Override
@@ -50,5 +40,11 @@ public class DiscreteBrewerScaleMapper<T> extends AbstractBrewerScaleMapper {
   @Override
   public MapType getMapType() {
     return MapType.DISCRETE;
+  }
+
+  private void createValueColorMap(Set<T> values, ColorBrewer colorBrewer) {
+    Stack<Color> colors = new Stack();
+    colors.addAll(Arrays.asList(colorBrewer.getColorPalette(values.size())));
+    valueColorMap = values.stream().collect(Collectors.toMap(Function.identity(), value -> colors.pop()));
   }
 }

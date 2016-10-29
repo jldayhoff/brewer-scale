@@ -15,12 +15,10 @@ import org.jcolorbrewer.ColorBrewer;
 public abstract class AbstractBrewerScaleMapper implements FilterMapper {
 
   protected final String columnName;
-  protected final OrderType orderType;
   protected final ColorBrewer colorBrewer;
 
-  public AbstractBrewerScaleMapper(ColorBrewer colorBrewer, String columnName, OrderType orderType) {
+  public AbstractBrewerScaleMapper(ColorBrewer colorBrewer, String columnName) {
     this.columnName = columnName;
-    this.orderType = orderType;
     this.colorBrewer = colorBrewer;
     validateColorBrewer(colorBrewer);
   }
@@ -32,11 +30,6 @@ public abstract class AbstractBrewerScaleMapper implements FilterMapper {
               .forEach(networkView -> networkView.getNodeView(node).setLockedValue(BasicVisualLexicon.NODE_FILL_COLOR,
                       brewerColor));
     });
-  }
-
-  @Override
-  public OrderType getOrderType() {
-    return orderType;
   }
 
   protected abstract Optional<Color> getColor(CyRow row);

@@ -37,6 +37,10 @@ public class ColorBrewerMapperUtil {
   /**
    * Applies a {@link FilterMapper} to each network available
    * in the {@link CyNetworkManager}
+   *
+   * @param columnName  {@link String}
+   * @param colorBrewer {@link ColorBrewer}
+   * @param mapType     {@link MapType}
    */
   public void applyFilterToNetworks(String columnName, ColorBrewer colorBrewer, MapType mapType) {
     this.cyActivator.getNetworkManager().getNetworkSet()
@@ -48,7 +52,10 @@ public class ColorBrewerMapperUtil {
    * Applies a {@link FilterMapper} to specified {@link CyNetwork} and its
    * {@link Collection} of {@link CyNetworkView}
    *
-   * @param network {@link CyNetwork}
+   * @param network     {@link CyNetwork}
+   * @param columnName  {@link String}
+   * @param colorBrewer {@link ColorBrewer}
+   * @param mapType     {@link MapType}
    */
   public void applyFilterToNetwork(CyNetwork network, String columnName, ColorBrewer colorBrewer, MapType mapType) {
     CyNetworkViewManager viewManager = cyActivator.getNetworkViewManager();
