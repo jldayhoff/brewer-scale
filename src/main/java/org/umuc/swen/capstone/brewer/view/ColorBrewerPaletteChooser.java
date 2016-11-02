@@ -66,5 +66,6 @@ public class ColorBrewerPaletteChooser extends JDialog {
     mainPanel.add(radioPanel);
     mainPanel.add(colorPanel);
     add(mainPanel);
+    pack();
   }
 }
