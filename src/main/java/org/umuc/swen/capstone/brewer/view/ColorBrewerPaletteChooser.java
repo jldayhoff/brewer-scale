@@ -7,6 +7,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
+import org.jcolorbrewer.ColorBrewer;
 import org.jcolorbrewer.ui.ColorPanelSelectionModel;
 import org.jcolorbrewer.ui.DivergingColorPalettePanel;
 import org.jcolorbrewer.ui.QualitativeColorPalettePanel;
@@ -18,12 +19,22 @@ import org.umuc.swen.capstone.brewer.view.listener.RadioButtonListener;
  */
 public class ColorBrewerPaletteChooser extends JDialog {
 
-  private final JPanel mainPanel = new JPanel();
+  private final JPanel mainPanel;
   private final JColorChooser colorPanel;
+  private final SequentialColorPalettePanel sequentialColorPalettePanel;
+  private final DivergingColorPalettePanel divergingColorPalettePanel;
+  private final QualitativeColorPalettePanel qualitativeColorPalettePanel;
 
   public ColorBrewerPaletteChooser() {
+    mainPanel = new JPanel();
     colorPanel = new JColorChooser(new ColorPanelSelectionModel());
     mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
+    // create color palettes
+    sequentialColorPalettePanel = new SequentialColorPalettePanel();
+    divergingColorPalettePanel = new DivergingColorPalettePanel();
+    qualitativeColorPalettePanel = new QualitativeColorPalettePanel();
+
     initializeDialog();
   }
 
@@ -37,16 +48,20 @@ public class ColorBrewerPaletteChooser extends JDialog {
     repaint();
   }
 
+  public ColorBrewer getSelectedPalette() {
+    return ((ColorPanelSelectionModel) colorPanel.getSelectionModel()).getColorBrewer();
+  }
+
   private void initializeDialog() {
     JPanel radioPanel = new JPanel();
 
-    JRadioButton sequential = new JRadioButton("Sequential");
-    JRadioButton diverging = new JRadioButton("Diverging");
-    JRadioButton qualitative = new JRadioButton("Qualitative");
+    JRadioButton sequential = new JRadioButton(sequentialColorPalettePanel.getDisplayName());
+    JRadioButton diverging = new JRadioButton(divergingColorPalettePanel.getDisplayName());
+    JRadioButton qualitative = new JRadioButton(qualitativeColorPalettePanel.getDisplayName());
 
-    sequential.addActionListener(new RadioButtonListener(this, new SequentialColorPalettePanel()));
-    diverging.addActionListener(new RadioButtonListener(this, new DivergingColorPalettePanel()));
-    qualitative.addActionListener(new RadioButtonListener(this, new QualitativeColorPalettePanel()));
+    sequential.addActionListener(new RadioButtonListener(this, sequentialColorPalettePanel));
+    diverging.addActionListener(new RadioButtonListener(this, divergingColorPalettePanel));
+    qualitative.addActionListener(new RadioButtonListener(this, qualitativeColorPalettePanel));
 
     ButtonGroup mappersButtonGroup = new ButtonGroup();
     mappersButtonGroup.add(sequential);
@@ -57,9 +72,9 @@ public class ColorBrewerPaletteChooser extends JDialog {
     radioPanel.add(qualitative);
     radioPanel.add(diverging);
 
-    // set selection to sequential
+    // set initial selection to sequential
     sequential.setSelected(true);
-    setColorPanel(new SequentialColorPalettePanel());
+    setColorPanel(sequentialColorPalettePanel);
 
 
     // add everything
